@@ -7,7 +7,7 @@ body>header{position:fixed;top:0;left:0;right:2em;height:2em;}
 body>section{position:fixed;top:0;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
 section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;padding-top:2em;height:100%;padding-left:1em}
 article>section.des{position:absolute;left:1em;bottom:3em;width:10em;height:8em;padding:0.5em;}
-article>section.price{position:absolute;top:2em;right:2em}
+/*article>section.price{position:absolute;top:2em;right:2em}*/
 section.price>ul li{list-style:none}
 body>nav{position:absolute;top:0;width:2em;right:0;bottom:0;padding-top:0.5em}
 body>nav li{list-style:none;width:1.8em;}
@@ -28,17 +28,17 @@ body>header{background-color:rgba(255,255,255,0.8); line-height:2em;}
 h1{font-size:2em;text-shadow: 0 0 0.2em #FFF, 0 0 0.2em #FFF;}
 h2{font-size:1.5em;text-shadow: white 0 1px 1px;}
 article>section.des{font-size:0.8em;background-color:rgba(255,255,255,0.8)}
-/*price theme 1*/
+/*price theme 1
 section.price>ul li{display:inline;color:orange;text-shadow: white 0 1px 1px;}
 section.price>ul li:first-child{font-size:0.8em;}
 section.price>ul li:first-child:before{content:'原价:'}
 section.price>ul li:last-child{font-size:1.2em;font-weight:bold}
-section.price>ul li:last-child:before{content:'/会员价:'}
-/*price theme 2
+section.price>ul li:last-child:before{content:'/会员价:'}*/
+/*price theme 2*/
 section.price>ul:before{font-size:1.5em;content:'￥';color:orange}
 section.price>ul li{display:inline;color:orange;text-shadow: white 0 1px 1px;}
 section.price>ul li:first-child{font-size:0.8em;text-decoration:line-through;}
-section.price>ul li:last-child{font-size:1.2em;font-weight:bold}*/
+section.price>ul li:last-child{font-size:1.2em;font-weight:bold}
 
 body>nav li{border-radius:0 5px 5px 0;border:1px solid black;box-shadow: rgba(0, 0, 128, 0.25) 2px 2px 0px;border-left:0}
 body>nav li:nth-child(4n){background-color:#fff701}
