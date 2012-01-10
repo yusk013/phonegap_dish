@@ -1,2 +1,3 @@
 command 1
-command 2command 2
+command 2
+command 3
