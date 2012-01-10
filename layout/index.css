@@ -24,8 +24,8 @@ body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box
 }
 
 /**theme**/
-body>header{background-color:rgba(255,255,255,0.8); line-height:2em;}
-h1{font-size:2em;text-shadow: 0 0 0.2em #FFF, 0 0 0.2em #FFF;}
+body>header{background-color: #DBE3FA; background:-webkit-linear-gradient(top,#D9E2FA,#B5C8F9);border-bottom:solid 1px #9EADD2;line-height:2em;}
+h1{font-size:1.2em;text-shadow:white 0 1px 1px;text-align:center}
 h2{font-size:1.5em;text-shadow: white 0 1px 1px;}
 article>section.des{font-size:0.8em;background-color:rgba(255,255,255,0.8)}
 /*price theme 1
@@ -46,6 +46,6 @@ body>nav li:nth-child(4n){background-color:#fff701}
 body>nav li:nth-child(4n+1){background-color:#ffa200}
 body>nav li:nth-child(4n+2){background-color:#0bcdcc}
 body>nav li:nth-child(4n+3){background-color:#96cd02}
-body>footer{line-height:2em;background: linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);background: -webkit-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);}
+body>footer{line-height:2em;background-color: #DBE3FA;background: linear-gradient(top, #D9E2FA 0%,#B5C8F9 100%);background: -webkit-linear-gradient(top,#D9E2FA,#B5C8F9);}
 body>footer a{font-weight:bold;text-shadow: 1px 1px white, -1px -1px #444;}
 body>footer a:nth-child(2){border:1px groove #EFEFEF;border-width:0 2px}
