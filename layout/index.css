@@ -12,9 +12,9 @@ body>nav li:nth-child(4n+2){background-color:#0bcdcc}
 body>nav li:nth-child(4n+3){background-color:#96cd02}
 body>nav li>a{display:block;width:1.8em;padding:1em 0;text-decoration:none;}
 body>section{position:fixed;top:0;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
-body>section>div{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;padding-top:2em;height:100%}
+body>section>div{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;padding-top:2em;height:100%;padding-left:1em}
 h2{font-size:1.5em;text-shadow: white 0 1px 1px;}
-body>section details{position:absolute;left:2em;bottom:2em;width:10em;height:8em;font-size:0.8em;padding:0.5em;background-color:rgba(255,255,255,0.5)}
+body>section details{position:absolute;left:0;bottom:0;width:10em;height:8em;font-size:0.8em;padding:0.5em;background-color:rgba(255,255,255,0.5)}
 body>footer{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box-orient: horizontal;}
 body>footer a{display:block;-webkit-box-flex: 1;text-align:center;font-weight:bold;text-shadow: white 0 1px 1px;text-decoration:none}
 body>footer a:nth-child(2){border:1px groove #EFEFEF;border-width:0 2px}
