@@ -1,0 +1,30 @@
+﻿*{font-size: 16px;}
+ul, h1, h2{margin:0;padding:0}
+
+body>header{position:fixed;top:0;left:0;right:2em;height:2em; line-height:2em;background-color:rgba(255,255,255,0.5)}
+h1{font-size:2em;text-shadow: white 0 1px 1px;}
+body>footer{position:fixed;height:2em;line-height:2em;left:0;right:2em;bottom:0;background: linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);background: -webkit-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);}
+body>nav{position:absolute;top:0;width:2em;right:0;bottom:0;padding-top:0.5em}
+body>nav li{list-style:none;border-radius:0 5px 5px 0;width:1.8em;border:1px solid black;box-shadow: rgba(0, 0, 128, 0.25) 2px 2px 0px;border-left:0}
+body>nav li:nth-child(4n){background-color:#fff701}
+body>nav li:nth-child(4n+1){background-color:#ffa200}
+body>nav li:nth-child(4n+2){background-color:#0bcdcc}
+body>nav li:nth-child(4n+3){background-color:#96cd02}
+body>nav li>a{display:block;width:1.8em;padding:1em 0;text-decoration:none;}
+body>section{position:fixed;top:0;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
+body>section>div{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;padding-top:2em;height:100%}
+h2{font-size:1.5em;text-shadow: white 0 1px 1px;}
+body>section details{position:absolute;left:2em;bottom:2em;width:10em;height:8em;font-size:0.8em;padding:0.5em;background-color:rgba(255,255,255,0.5)}
+body>footer{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box-orient: horizontal;}
+body>footer a{display:block;-webkit-box-flex: 1;text-align:center;font-weight:bold;text-shadow: white 0 1px 1px;text-decoration:none}
+body>footer a:nth-child(2){border:1px groove #EFEFEF;border-width:0 2px}
+
+/*landscape*/
+body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box-orient: horizontal;}
+body>nav{background:#cfcfcf;}
+/*portrait*/
+@media screen and (orientation:portrait){
+	body>section{display:box;box-orient: vertical;display: -webkit-box;-webkit-box-orient: vertical;}
+	body>nav{background:#efefef;}
+	body>section>div:nth-child(n+2){padding-top:0}
+}
