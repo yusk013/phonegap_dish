@@ -11,7 +11,7 @@
 		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
 			var cateTmpl = "<ul>{{#category}}<li><a href='#c{{id}}'>{{name}}</a></li>{{/category}}</ul>";
-			var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'>{{price}}/{{vipPrice}}元</section></article>{{/dishes}}";
+			var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section></article>{{/dishes}}";
 			var $ = function(str){
 				return document.querySelector(str);
 			};
