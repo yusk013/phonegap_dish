@@ -79,6 +79,16 @@ var bindDishes = function () {
             }
         }
     }
+    var cateId = menus.pages[pageIndex - 1].cateId;
+    if (cateId) {
+        $("body>nav>ul>li").removeClass();
+        $("body>nav>ul>li>a").each(function () {
+            var cid = parseInt($(this).attr('cid'));
+            if (cid == cateId) {
+                $(this).parent().addClass('on');
+            }
+        });
+    }
     $("section").html(Mustache.to_html(dishTmpl, { dishes: currentDishes }));
 };
 
