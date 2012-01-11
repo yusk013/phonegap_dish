@@ -3,8 +3,8 @@ var pageSize = 3;
 var dishSelected = [];
 
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
-var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><button class='sub'>-</button><input type='text' value='{{count}}'/><button class='add'>+</button></section></article>{{/dishes}}";
-var sltTmpl = "<ol>{{#dishes}}{{#count}}<li>{{name}}<b class='p'>{{price}}元/份</b><b class='c'>{{count}}份</b></li>{{/dishes}}</ol>";
+var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><button class='sub'>-</button><input type='text' readonly value='{{count}}'/><button class='add'>+</button></section></article>{{/dishes}}";
+var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}元/份</b><b class='c'>{{count}}份</b></li>{{/dishes}}";
 //var $ = function (str) {
 //    return document.querySelector(str);
 //};
@@ -28,10 +28,7 @@ var bindEvent = function () {
         if (pageIndex > 1) pageIndex--;
         bindDishes();
     });
-    $("footer a:nth-child(2)").bind("click", function () {
-        $("#selected").slideDown();
-        
-    });
+    $("footer a:nth-child(2)").bind("click", bindSelectedMenu);
     $("footer a:nth-child(3)").bind("click", function () {
         if (menus.pages.length > pageIndex) pageIndex++;
         bindDishes();
@@ -40,6 +37,8 @@ var bindEvent = function () {
 
     $("section.slt button.add").live('click', addDish);
     $("section.slt button.sub").live('click', subDish);
+
+    $("#selected button").click(menuClose);
 };
 
 var onDeviceReady = function () {
@@ -73,7 +72,7 @@ var bindDishes = function () {
                         break;
                     }
                 }
-                var obj = menus.dishes[i];
+                var obj = $.extend({}, menus.dishes[i]);
                 obj.count = count;
                 currentDishes.push(obj);
                 break;
@@ -81,6 +80,32 @@ var bindDishes = function () {
         }
     }
     $("section").html(Mustache.to_html(dishTmpl, { dishes: currentDishes }));
+};
+
+var bindSelectedMenu = function () {
+    var menuList = [];
+    $.each(menus.dishes, function (i, n) {
+        $.each(dishSelected, function (j, m) {
+            if (n.id == m.id) {
+                var obj = $.extend({ count: m.count }, n);
+                menuList.push(obj);
+            }
+        });
+    });
+    if (menuList.length > 0) {
+        $("#selected ol").html(Mustache.to_html(sltTmpl, { dishes: menuList }));
+    }
+    else {
+        $("#selected ol").html("<li>您还未点菜，请点击“返回”点菜</li>");
+    }
+    menuShow();
+};
+var menuShow = function () {
+    $("#selected").css('top', '100%').show();
+    $("#selected").animate({ 'top': 0 }, 1000);
+};
+var menuClose = function () {
+    $("#selected").hide();
 };
 
 var subDish = function () {
