@@ -2,7 +2,7 @@
 var pageSize = 3;
 var dishSelected = [];
 
-var cateTmpl = "<ul>{{#category}}<li><a href='#c{{id}}' cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
+var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
 var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><button class='sub'>-</button><input type='text' value='{{count}}'/><button class='add'>+</button></section></article>{{/dishes}}";
 var sltTmpl = "<ol>{{#dishes}}{{#count}}<li>{{name}}<b class='p'>{{price}}元/份</b><b class='c'>{{count}}份</b></li>{{/dishes}}</ol>";
 //var $ = function (str) {
