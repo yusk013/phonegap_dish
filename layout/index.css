@@ -29,7 +29,7 @@ body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box
 }
 
 /**theme**/
-body>header{background-color: #DBE3FA; background:-webkit-linear-gradient(top,#D9E2FA,#B5C8F9);border-bottom:solid 1px #9EADD2;line-height:2em;}
+body>header{background-color: #DBE3FA; background:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #999), color-stop(0.02, #666), color-stop(1, #222));border-bottom:solid 1px #9EADD2;line-height:2em;}
 h1{font-size:1.2em;text-shadow:white 0 1px 1px;text-align:center}
 h2{font-size:1.5em;text-shadow: white 0 1px 1px;}
 article>section.des{font-size:0.8em;background-color:rgba(255,255,255,0.8)}
