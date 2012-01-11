@@ -3,22 +3,25 @@
 ul, h1, h2{margin:0;padding:0}
 
 /**frameset**/
-body>header{position:fixed;top:0;left:0;right:2em;height:2em;}
+body>header{position:fixed;top:0;left:0;right:0;height:2em;}
 body>section{position:fixed;top:2em;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
-section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;height:100%;padding-left:1em}
-article>section.des{position:absolute;left:1em;bottom:1em;right:1em;padding:0.5em;}
-article>section.slt{position:absolute;left:0;bottom:3em; text-align:center; right:0;}
+section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;height:100%;}
+article>section.des{position:absolute;left:0;bottom:2em;right:0;padding:0.5em;height:25%;overflow:auto}
+article>section.slt{position:absolute;left:0;height:2em;bottom:0; text-align:center; right:0;}
 /*article>section.price{position:absolute;top:2em;right:2em}*/
 section.price>ul li{list-style:none}
-body>nav{position:absolute;top:0;width:2em;right:0;bottom:0;padding-top:0.5em}
+body>nav{position:absolute;top:2em;width:2em;right:0;bottom:0;padding-top:0.5em}
 body>nav li{list-style:none;width:1.8em;}
 body>nav li>a{display:block;width:1.8em;padding:1em 2px;text-decoration:none;}
 body>footer{position:fixed;height:2em;left:0;right:2em;bottom:0;display:box;box-orient: horizontal;display: -webkit-box;-webkit-box-orient: horizontal;}
 body>footer a{display:block;-webkit-box-flex: 1;text-align:center;text-decoration:none}
 
+section.slt button{margin:0 2px;width:1.5em;height:1.5em;color:#650b0b;border:1px solid #e19c00;border-radius:2px;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fce302), color-stop(100%,#ffaf00));}
+/*
 article>section.slt button:nth-child(1) { width:3em;}
 article>section.slt button:nth-child(3) { width:5em;}
-article>section.slt input { width:2em;}
+*/
+section.slt input {width:2.5em;height:1.5em;border:0;padding:0;}
 
 /*landscape*/
 body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box-orient: horizontal;}
@@ -29,10 +32,16 @@ body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box
 }
 
 /**theme**/
-body>header{background-color: #DBE3FA; background:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #999), color-stop(0.02, #666), color-stop(1, #222));border-bottom:solid 1px #9EADD2;line-height:2em;}
-h1{font-size:1.2em;text-shadow:white 0 1px 1px;text-align:center}
-h2{font-size:1.5em;text-shadow: white 0 1px 1px;}
-article>section.des{font-size:0.8em;background-color:rgba(255,255,255,0.8)}
+body{background-color:#380000}
+body>header{background:url(top_bg.png);line-height:2em;}
+h1{font-size:1.2em;color:white;text-align:center;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.3)), color-stop(100%,rgba(255,255,255,0)));}
+h1:before{display:inline-block;width:175px;background:url(top_left.png) 100% 50% no-repeat;content:'&';text-indent:-9999px;}
+h1:after{display:inline-block;width:175px;background:url(top_right.png) 100% 50% no-repeat;content:'&';text-indent:-9999px;}
+section>article{border-color:#380000;border-style:solid;border-width:2px 2px 1px 0}
+h2{font-size:1.5em;color:white;}
+article>header{height:15%;background-color:rgba(0,0,0,0.3);padding-left:1em}
+article>section.des{font-size:0.8em;background-color:#622f14;color:white}
+section.price{margin-top:-2.5em;margin-left:1em}
 /*price theme 1
 section.price>ul li{display:inline;color:orange;text-shadow: white 0 1px 1px;}
 section.price>ul li:first-child{font-size:0.8em;}
@@ -40,19 +49,21 @@ section.price>ul li:first-child:before{content:'原价:'}
 section.price>ul li:last-child{font-size:1.2em;font-weight:bold}
 section.price>ul li:last-child:before{content:'/会员价:'}*/
 /*price theme 2*/
-section.price>ul:before{font-size:1.5em;content:'￥';color:orange}
-section.price>ul li{display:inline;color:orange;text-shadow: white 0 1px 1px;}
+section.price>ul:before{font-size:1.5em;content:'￥';color:#fdeb01}
+section.price>ul li{display:inline;color:#fdeb01;}
 section.price>ul li:first-child{font-size:0.8em;text-decoration:line-through;}
 section.price>ul li:last-child{font-size:1.2em;font-weight:bold}
 
-body>nav{border-left:1px solid black;box-shadow:inset 2px 0 5px #000;background-color:rgba(255,255,255,0.8)}
-body>nav li{border-radius:0 5px 5px 0;border:1px solid black;box-shadow:inset 2px 0 5px #000;border-left:0;}
-body>nav li:nth-child(4n){background-color:#fff701}
-body>nav li:nth-child(4n+1){background-color:#ffa200}
-body>nav li:nth-child(4n+2){background-color:#0bcdcc}
-body>nav li:nth-child(4n+3){background-color:#96cd02}
-body>footer{line-height:2em;background-color: #DBE3FA;background: linear-gradient(top, #D9E2FA 0%,#B5C8F9 100%);background: -webkit-linear-gradient(top,#D9E2FA,#B5C8F9);}
-body>footer a{font-weight:bold;text-shadow: 1px 1px white, -1px -1px #444;}
-body>footer a:nth-child(2){border:1px groove #EFEFEF;border-width:0 2px}
+section.slt{background-color:#622f14}
+
+
+body>nav li{border-radius:0 5px 5px 0;border-width:1px 1px 1px 0;border-style:solid;}
+body>nav li:nth-child(4n+1){border-color:#d5ca10;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fffb8f), color-stop(100%,#fff701));background: linear-gradient(top, #fffb8f 0%,#fff701 100%);}
+body>nav li:nth-child(4n+2){border-color:#e39914;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd101), color-stop(100%,#ffa300));background: linear-gradient(top, #ffd101 0%,#ffa300 100%);}
+body>nav li:nth-child(4n+3){border-color:#00a6a4;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#a1ebea), color-stop(100%,#02b6b5));background: linear-gradient(top, #a1ebea 0%,#02b6b5 100%);}
+body>nav li:nth-child(4n){border-color:#78a403;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#bef400), color-stop(100%,#7eae00));background: linear-gradient(top, #bef400 0%,#7eae00 100%);}
+body>footer{line-height:2em;background-color: #86340a;background: linear-gradient(top, #86340a 0%,#371300 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#86340a), color-stop(100%,#371300));}
+body>footer a{color:white}
+body>footer a:nth-child(2){border:1px groove #380000;border-width:0 2px}
 
 body>div#selected { display:none; height:90%; width:50%; margin:0 auto; background:red; position:absolute;}
