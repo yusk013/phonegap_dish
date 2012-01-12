@@ -3,7 +3,7 @@ var pageSize = 3;
 var dishSelected = [];
 
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
-var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><button class='sub'>-</button><input type='text' readonly value='{{count}}'/><button class='add'>+</button></section></article>{{/dishes}}";
+var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a></section></article>{{/dishes}}";
 var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}元/份</b><b class='c'>{{count}}份</b></li>{{/dishes}}";
 //var $ = function (str) {
 //    return document.querySelector(str);
@@ -35,8 +35,8 @@ var bindEvent = function () {
     });
     $("nav li a").bind("click", bindCategoryDishes); ;
 
-    $("section.slt button.add").live('click', addDish);
-    $("section.slt button.sub").live('click', subDish);
+    $("section.slt a.add").live('click', addDish);
+    $("section.slt a.sub").live('click', subDish);
 
     $("#selected button").click(menuClose);
 };
