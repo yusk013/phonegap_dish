@@ -3,6 +3,7 @@
 ul, h1, h2{margin:0;padding:0}
 
 /**frameset**/
+body{overflow:hidden}
 body>header{position:fixed;top:0;left:0;right:0;height:2em;overflow:hidden;}
 body>section{position:fixed;top:2em;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
 section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;height:100%;}
@@ -74,7 +75,7 @@ body>footer a:nth-child(2){border:1px groove #380000;border-width:0 2px}
 }
 
 
-body>div#selected { display:none; height:90%; width:50%; margin:0 auto; background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbf3e8), color-stop(100%,#f2dab4)); border:1px solid #380000;position:absolute;border-radius:5px 5px 0 0}
+body>div#selected {position:absolute;top:1em;bottom:1em;left:2em;right:2em; display:none;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbf3e8), color-stop(100%,#f2dab4)); border:1px solid #380000;border-radius:5px 5px 0 0;}
 
 #selected h2{font-size:1.2em;padding:0.5em;font-weight:bold;text-align:center;border-radius:5px 5px 0 0;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8c3a6), color-stop(100%,#dba080))}
 #selected button{background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fce302), color-stop(100%,#ffaf00));border:1px solid #e19c00;color:#650b0b;font-size:1.2em;padding:0.2em 2em;border-radius:2px;margin:2px auto;text-align:center}
