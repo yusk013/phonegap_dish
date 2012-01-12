@@ -1,3 +1,3 @@
-command 1
-command 2
-command 3
+2012-1-12
+在landscape下的效果已经基本具备，portrait下效果问题较多，需要再次调整。
+部分界面功能在不同的设备下效果不同。

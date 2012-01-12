@@ -3,7 +3,7 @@
 ul, h1, h2{margin:0;padding:0}
 
 /**frameset**/
-body>header{position:fixed;top:0;left:0;right:0;height:2em;}
+body>header{position:fixed;top:0;left:0;right:0;height:2em;overflow:hidden;}
 body>section{position:fixed;top:2em;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
 section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;height:100%;}
 article>section.des{position:absolute;left:0;bottom:2em;right:0;padding:0.5em;height:25%;overflow:auto}
@@ -28,6 +28,7 @@ body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box
 /*portrait*/
 @media screen and (orientation:portrait){
 	body>section{display:box;box-orient: vertical;display: -webkit-box;-webkit-box-orient: vertical;}
+	
 	article>section.des{top:1em;bottom:1em;right:1em;max-width:4em;left:auto;}
 }
 
@@ -65,5 +66,11 @@ body>nav li:nth-child(4n){border-color:#78a403;background:-webkit-gradient(linea
 body>footer{line-height:2em;background-color: #86340a;background: linear-gradient(top, #86340a 0%,#371300 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#86340a), color-stop(100%,#371300));}
 body>footer a{color:white}
 body>footer a:nth-child(2){border:1px groove #380000;border-width:0 2px}
+
+/*portrait*/
+@media screen and (orientation:portrait){
+	h1:before,h1:after{width:auto;content:''}
+}
+
 
 body>div#selected { display:none; height:90%; width:50%; margin:0 auto; background:red; position:absolute;}
