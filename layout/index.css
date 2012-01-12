@@ -81,3 +81,6 @@ body>div#selected {position:absolute;top:1em;bottom:1em;left:2em;right:2em; disp
 
 #selected h2{font-size:1.2em;padding:0.5em;font-weight:bold;text-align:center;border-radius:5px 5px 0 0;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8c3a6), color-stop(100%,#dba080))}
 #selected button{background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fce302), color-stop(100%,#ffaf00));border:1px solid #e19c00;color:#650b0b;font-size:1.2em;padding:0.2em 2em;border-radius:2px;margin:2px auto;text-align:center}
+#selected thead{color:#380000}
+#selected tbody{color:#843e1a}
+#selected tr{border-bottom:1px solid black}

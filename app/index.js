@@ -4,22 +4,8 @@ var dishSelected = [];
 
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
 var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a></section></article>{{/dishes}}";
-var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}元/份</b><b class='c'>{{count}}份</b></li>{{/dishes}}";
-//var $ = function (str) {
-//    return document.querySelector(str);
-//};
-//var $a = function (str) {
-//    return document.querySelectorAll(str);
-//}
-Array.prototype.contains = function (key) {
-    for (var i in this) {
-        if (this[i] == key) {
-            return true;
-        }
-    }
-    return false;
-};
-
+var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}/{{vipPrice}}元/份</b><b class='c'>{{count}}份</b><b>{{tp}}/{{tvp}}</b></li>{{/dishes}}";
+//var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格</th><th>数量</th><th>小计</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{tp}}/{{tvp}}</td></tr>{{/dishes}}</tbody></table>"
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -97,7 +83,7 @@ var bindSelectedMenu = function () {
     $.each(menus.dishes, function (i, n) {
         $.each(dishSelected, function (j, m) {
             if (n.id == m.id) {
-                var obj = $.extend({ count: m.count }, n);
+                var obj = $.extend({ count: m.count, tp: n.price * m.count, tvp: n.vipPrice * m.count }, n);
                 menuList.push(obj);
             }
         });
