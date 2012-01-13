@@ -3,9 +3,9 @@ var pageSize = 3;
 var dishSelected = [];
 
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
-var dishTmpl = "{{#dishes}}<article style='background-image:url(img/{{img}})' data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a></section></article>{{/dishes}}";
-var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}/{{vipPrice}}元/份</b><b class='c'>{{count}}份</b><b>{{tp}}/{{tvp}}</b></li>{{/dishes}}";
-//var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格</th><th>数量</th><th>小计</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{tp}}/{{tvp}}</td></tr>{{/dishes}}</tbody></table>"
+var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url(img/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a></section></article>{{/dishes}}";
+//var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}/{{vipPrice}}元/份</b><b class='c'>{{count}}份</b><b>{{tp}}/{{tvp}}</b></li>{{/dishes}}";
+var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{tp}}/{{tvp}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>"
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -24,7 +24,7 @@ var bindEvent = function () {
     $("section.slt a.add").live('click', addDish);
     $("section.slt a.sub").live('click', subDish);
 
-    $("#selected button").click(menuClose);
+    $("#selected a.close").click(menuClose);
 };
 
 var onDeviceReady = function () {
@@ -88,11 +88,13 @@ var bindSelectedMenu = function () {
             }
         });
     });
+    var sltDishTxt = "已点菜品(" + menuList.length + ")";
+    $("#selected h2").text(sltDishTxt);
     if (menuList.length > 0) {
-        $("#selected ol").html(Mustache.to_html(sltTmpl, { dishes: menuList }));
+        $("#selected div.t").html(Mustache.to_html(sltTmpl, { dishes: menuList, total:11 }));
     }
     else {
-        $("#selected ol").html("<li>您还未点菜，请点击“返回”点菜</li>");
+        $("#selected div.t").html("<tr><th>您还未点菜，请点击“返回”点菜</th>");
     }
     menuShow();
 };
@@ -141,4 +143,7 @@ var selectdDish = function ($this, count) {
         selected.count = count;
         dishSelected.push(selected);
     }
+    var sltDishTxt = "已点菜品(" + dishSelected.length + ")";
+    
+    $("footer a").eq(1).text(sltDishTxt);
 };
