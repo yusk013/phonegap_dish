@@ -3,7 +3,7 @@ var pageSize = 3;
 //var dishSelected = [];
 
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
-var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url(img/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a>点一个</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/dishes}}";
+var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url(img/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='{{#count}}chk{{/count}}'>{{#count}}不要了{{/count}}{{^count}}点一个{{/count}}</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/dishes}}";
 var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{price}}/{{vipPrice}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>"
 
 document.addEventListener("deviceready", onDeviceReady, false);
