@@ -1,11 +1,10 @@
 ﻿var pageIndex = 1;
 var pageSize = 3;
-var dishSelected = [];
+//var dishSelected = [];
 
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
-var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url(img/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a></section></article>{{/dishes}}";
-//var sltTmpl = "{{#dishes}}<li>{{name}}<b class='p'>{{price}}/{{vipPrice}}元/份</b><b class='c'>{{count}}份</b><b>{{tp}}/{{tvp}}</b></li>{{/dishes}}";
-var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{tp}}/{{tvp}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>"
+var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url(img/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a>点一个</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/dishes}}";
+var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{price}}/{{vipPrice}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>"
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -21,8 +20,9 @@ var bindEvent = function () {
     });
     $("nav li a").bind("click", bindCategoryDishes); ;
 
-    $("section.slt a.add").live('click', addDish);
-    $("section.slt a.sub").live('click', subDish);
+    $("section.slt a").live('click', selectdDish);
+    //$("section.slt a.add").live('click', addDish);
+    //$("section.slt a.sub").live('click', subDish);
 
     $("#selected a.close").click(menuClose);
 };
@@ -51,16 +51,18 @@ var bindDishes = function () {
     for (var j in page.dishes) {
         for (var i in menus.dishes) {
             if (page.dishes[j] == menus.dishes[i].id) {
+                /*
                 var count = 0;
                 for (var k in dishSelected) {
-                    if (menus.dishes[i].id == dishSelected[k].id) {
-                        count = dishSelected[k].count;
-                        break;
-                    }
+                if (menus.dishes[i].id == dishSelected[k].id) {
+                count = dishSelected[k].count;
+                break;
+                }
                 }
                 var obj = $.extend({}, menus.dishes[i]);
                 obj.count = count;
-                currentDishes.push(obj);
+                currentDishes.push(obj);*/
+                currentDishes.push(menus.dishes[i]);
                 break;
             }
         }
@@ -80,18 +82,28 @@ var bindDishes = function () {
 
 var bindSelectedMenu = function () {
     var menuList = [];
+    /*
     $.each(menus.dishes, function (i, n) {
-        $.each(dishSelected, function (j, m) {
-            if (n.id == m.id) {
-                var obj = $.extend({ count: m.count, tp: n.price * m.count, tvp: n.vipPrice * m.count }, n);
-                menuList.push(obj);
-            }
-        });
+    $.each(dishSelected, function (j, m) {
+    if (n.id == m.id) {
+    var obj = $.extend({ count: m.count, tp: n.price * m.count, tvp: n.vipPrice * m.count }, n);
+    menuList.push(obj);
+    }
+    });
+    });*/
+    var total = 0;
+    var vtotal = 0;
+    $.each(menus.dishes, function (i, n) {
+        if (n.count > 0) {
+            menuList.push(n);
+            total += n.price;
+            vtotal += n.vipPrice;
+        }
     });
     var sltDishTxt = "已点菜品(" + menuList.length + ")";
     $("#selected h2").text(sltDishTxt);
     if (menuList.length > 0) {
-        $("#selected div.t").html(Mustache.to_html(sltTmpl, { dishes: menuList, total:11 }));
+        $("#selected div.t").html(Mustache.to_html(sltTmpl, { dishes: menuList, total: total, vTotal: vtotal }));
     }
     else {
         $("#selected div.t").html("<tr><th>您还未点菜，请点击“返回”点菜</th>");
@@ -106,44 +118,71 @@ var menuClose = function () {
     $("#selected").hide();
 };
 
-var subDish = function () {
-    var txt = $(this).next();
-    var val = parseInt(txt.val());
-    if (val > 0) {
-        var finalValue = val - 1;
-        txt.val(finalValue);
-        selectdDish($(this), finalValue);
+var selectdDish = function () {
+    var dishId = parseInt($(this).parent().parent("article").attr('data-id'));
+    var isChk = !$(this).hasClass('chk');
+    $(this).toggleClass('chk');
+    var count = 0;
+    if (isChk) {
+        count = 1;
+        $(this).text('不要了');
     }
-};
-var addDish = function () {
-    var txt = $(this).prev();
-    var val = parseInt(txt.val());
-    var finalValue = val + 1;
-    txt.val(finalValue);
-    selectdDish($(this), finalValue);
-};
-var selectdDish = function ($this, count) {
-    var dishId = parseInt($this.parent().parent("article").attr('data-id'));
-    var isHave = false;
-    $.each(dishSelected, function (i, n) {
+    else {
+        $(this).text('点一个');
+    }
+    var sltCount = 0;
+    $.each(menus.dishes, function (i, n) {
         if (n.id == dishId) {
-            if (count > 0) {
-                n.count = count;
-            }
-            else {
-                dishSelected.splice(i, 1);
-            }
-            isHave = true;
-            return false;
+            n.count = count;
+        }
+        if (n.count > 0) {
+            sltCount++;
         }
     });
-    if (!isHave && count > 0) {
-        var selected = {};
-        selected.id = dishId;
-        selected.count = count;
-        dishSelected.push(selected);
-    }
-    var sltDishTxt = "已点菜品(" + dishSelected.length + ")";
-    
+    var sltDishTxt = "已点菜品(" + sltCount + ")";
     $("footer a").eq(1).text(sltDishTxt);
 };
+/*
+var subDish = function () {
+var txt = $(this).next();
+var val = parseInt(txt.val());
+if (val > 0) {
+var finalValue = val - 1;
+txt.val(finalValue);
+selectdDish($(this), finalValue);
+}
+};
+var addDish = function () {
+var txt = $(this).prev();
+var val = parseInt(txt.val());
+var finalValue = val + 1;
+txt.val(finalValue);
+selectdDish($(this), finalValue);
+};
+
+var selectdDish = function ($this, count) {
+var dishId = parseInt($this.parent().parent("article").attr('data-id'));
+var isHave = false;
+$.each(dishSelected, function (i, n) {
+if (n.id == dishId) {
+if (count > 0) {
+n.count = count;
+}
+else {
+dishSelected.splice(i, 1);
+}
+isHave = true;
+return false;
+}
+});
+if (!isHave && count > 0) {
+var selected = {};
+selected.id = dishId;
+selected.count = count;
+dishSelected.push(selected);
+}
+var sltDishTxt = "已点菜品(" + dishSelected.length + ")";
+    
+$("footer a").eq(1).text(sltDishTxt);
+};
+*/
