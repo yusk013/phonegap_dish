@@ -1,12 +1,39 @@
 ﻿var pageIndex = 1;
 var pageSize = 3;
+var entryPath = "/mnt/sdcard/eMenu/";
+var menus;
 //var dishSelected = [];
 
+/*
 var cateTmpl = "<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>";
 var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url(img/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='{{#count}}chk{{/count}}'>{{#count}}不要了{{/count}}{{^count}}点一个{{/count}}</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/dishes}}";
 var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{price}}/{{vipPrice}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>"
+*/
 
 document.addEventListener("deviceready", onDeviceReady, false);
+
+var onDeviceReady = function () {
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+		fileSystem.root.getDirectory("eMenu", null, function(dirEntry){
+			entryPath = dirEntry.fullPath;
+			dirEntry.getFile("dishes.json", null, function(fileEntry){
+				fileEntry.file(function(file){
+					var reader = new FileReader();
+					reader.onloadend = function(evt) {
+						menus = evt.target.result;
+						initUI();
+					};
+					reader.readAsText(file);
+				}, fail);
+			}, fail);
+		}, fail); 
+	}, fail);
+};
+
+var fail = function(error) {
+	console.log(error.code);
+	alert("error:" + error.code);
+};
 
 var bindEvent = function () {
     $("footer a:nth-child(1)").bind("click", function () {
@@ -27,12 +54,6 @@ var bindEvent = function () {
     $("#selected a.close").click(menuClose);
 };
 
-var onDeviceReady = function () {
-    $("header h1").text(menus.corp.name);
-    $("nav").html(Mustache.to_html(cateTmpl, menus));
-    bindDishes();
-    bindEvent();
-};
 var bindCategoryDishes = function () {
     var cid = parseInt(this.getAttribute("cid"));
     for (var i in menus.pages) {
@@ -44,24 +65,27 @@ var bindCategoryDishes = function () {
     bindDishes();
 };
 
+var initUI = function(){
+	$("header h1").text(menus.corp.name);
+	$("nav").html(Mustache.to_html($("#cateTmpl").html(), menus));
+	var dishesUI = Mustache.to_html($("#dishTmpl").html(), {dishes: menus.dishes});
+	$("section").html(dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
+	bindDishes();
+	bindEvent();
+}
+
 var bindDishes = function () {
     var page = menus.pages[pageIndex - 1];
     if (!page) return;
+	$("section>article").hide();
+	$.each(page.dishes, function(i){
+		$("section>article[data-id='" + page.dishes[i] + "']").show();
+	});
+	/*
     var currentDishes = [];
     for (var j in page.dishes) {
         for (var i in menus.dishes) {
             if (page.dishes[j] == menus.dishes[i].id) {
-                /*
-                var count = 0;
-                for (var k in dishSelected) {
-                if (menus.dishes[i].id == dishSelected[k].id) {
-                count = dishSelected[k].count;
-                break;
-                }
-                }
-                var obj = $.extend({}, menus.dishes[i]);
-                obj.count = count;
-                currentDishes.push(obj);*/
                 currentDishes.push(menus.dishes[i]);
                 break;
             }
@@ -78,6 +102,7 @@ var bindDishes = function () {
         });
     }
     $("section").html(Mustache.to_html(dishTmpl, { dishes: currentDishes }));
+	*/
 };
 
 var bindSelectedMenu = function () {
@@ -103,7 +128,7 @@ var bindSelectedMenu = function () {
     var sltDishTxt = "已点菜品(" + menuList.length + ")";
     $("#selected h2").text(sltDishTxt);
     if (menuList.length > 0) {
-        $("#selected div.t").html(Mustache.to_html(sltTmpl, { dishes: menuList, total: total, vTotal: vtotal }));
+        $("#selected div.t").html(Mustache.to_html($("#sltTmpl").html(), { dishes: menuList, total: total, vTotal: vtotal }));
     }
     else {
         $("#selected div.t").html("<tr><th>您还未点菜，请点击“返回”点菜</th>");

@@ -6,7 +6,7 @@ ul, h1, h2{margin:0;padding:0}
 body{overflow:hidden}
 body>header{position:fixed;top:0;left:0;right:0;height:2em;overflow:hidden;}
 body>section{position:fixed;top:2em;left:0;right:2em;bottom:2em;overflow:hidden;z-index:-50;}
-section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;width:33%;height:100%;}
+section>article{position:relative;background-size:cover;-webkit-box-flex:1;box-flex:1;width:33%;height:100%;display:none}
 article>section.dish { position:absolute; z-index:-1; left:0; right:0; top:0; height:75%; background-repeat:no-repeat; background-size:100%;}
 article>section.des{position:absolute;left:0;bottom:2em;right:0;padding:0.5em;height:25%;overflow:auto}
 article>section.slt{position:absolute;left:0;height:3em;bottom:0; text-align:center; right:0;}
@@ -34,7 +34,7 @@ body>section{display:box;box-orient: horizontal;display: -webkit-box;-webkit-box
 /*portrait*/
 @media screen and (orientation:portrait){
 	body>section{display:box;box-orient: vertical;display: -webkit-box;-webkit-box-orient: vertical;}
-	section>article{width:100%;height:33%}
+	section>article{width:100%;height:33%;display:none}
 	article>section.des{top:0;bottom:0;right:0;width:40%;left:auto;height:auto;padding-bottom:2em}
 	article>section.slt{width:40%;left:auto;height:2em;bottom:0; text-align:center; right:0;}
     article>section.dish { height:100%; background-size:100%; width:60%;}

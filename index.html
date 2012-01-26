@@ -4,11 +4,24 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
     <title>移动电子菜单</title>
     <link rel="stylesheet" type="text/css" href="layout/index.css" />
-    <script type="text/javascript" src="app/json.js"></script>
-    <script type="text/javascript" src="lib/mustache.js"></script>
     <script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="lib/zepto.min.js"></script>
+    <script type="text/javascript" src="lib/mustache.js"></script>
+	<!--
+    <script type="text/javascript" src="lib/underscore-min.js"></script>
+    <script type="text/javascript" src="lib/backbone-min.js"></script>
+    <script type="text/javascript" src="app/json.js"></script>
+	-->
     <script type="text/javascript" src="app/index.js"></script>
+	<script id="cateTmpl" type="text/html">
+	<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>
+	</script>
+	<script id="dishTmpl" type="text/html">
+	{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='{{#count}}chk{{/count}}'>{{#count}}不要了{{/count}}{{^count}}点一个{{/count}}</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/dishes}}
+	</script>
+	<script id="sltTmpl" type="text/html">
+	<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{price}}/{{vipPrice}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>
+	</script>
 </head>
 <body>
     <header>
@@ -31,7 +44,7 @@
             <a class="close">返回</a></div>
     </div>
     <script type="text/javascript" charset="utf-8">
-        onDeviceReady()
+        //initUI()
     </script>
 </body>
 </html>
