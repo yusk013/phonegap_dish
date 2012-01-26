@@ -1,6 +1,6 @@
 ﻿var pageIndex = 1;
 var pageSize = 3;
-var entryPath = "/mnt/sdcard/eMenu/";
+var entryPath = "/mnt/sdcard/eMenu";
 var menus;
 //var dishSelected = [];
 
@@ -10,20 +10,15 @@ var dishTmpl = "{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></
 var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{price}}/{{vipPrice}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>"
 */
 
-document.addEventListener("deviceready", onDeviceReady, false);
-
 var onDeviceReady = function () {
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
 		fileSystem.root.getDirectory("eMenu", null, function(dirEntry){
 			entryPath = dirEntry.fullPath;
-			alert(entryPath);
 			dirEntry.getFile("dishes.json", null, function(fileEntry){
 				fileEntry.file(function(file){
 					var reader = new FileReader();
 					reader.onloadend = function(evt) {
-						menus = evt.target.result;
-						alert("I gota it");
-						alert(menus.corp.name);
+						eval("menus = " + evt.target.result);
 						initUI();
 					};
 					reader.readAsText(file);
@@ -170,6 +165,9 @@ var selectdDish = function () {
     var sltDishTxt = "已点菜品(" + sltCount + ")";
     $("footer a").eq(1).text(sltDishTxt);
 };
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
 /*
 var subDish = function () {
 var txt = $(this).next();
