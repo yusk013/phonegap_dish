@@ -16,11 +16,14 @@ var onDeviceReady = function () {
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
 		fileSystem.root.getDirectory("eMenu", null, function(dirEntry){
 			entryPath = dirEntry.fullPath;
+			alert(entryPath);
 			dirEntry.getFile("dishes.json", null, function(fileEntry){
 				fileEntry.file(function(file){
 					var reader = new FileReader();
 					reader.onloadend = function(evt) {
 						menus = evt.target.result;
+						alert("I gota it");
+						alert(menus.corp.name);
 						initUI();
 					};
 					reader.readAsText(file);
