@@ -26,12 +26,37 @@ var onDeviceReady = function () {
 			}, fail);
 		}, fail); 
 	}, fail);
+	document.addEventListener("backbutton", onBackKeyDown, false);
+	document.addEventListener("menubutton", onMenuKeyDown, false);
+	document.addEventListener("searchbutton", onSearchKeyDown, false);
 };
 
 var fail = function(error) {
 	console.log(error.code);
-	alert("error:" + error.code);
+	//alert("error:" + error.code);
+	showInitErrMsg("初始化失败(" + error.code + "), 请与厂家联系.")
 };
+
+var showInitErrMsg = function(msg){
+	$("#cover a").text(msg);
+}
+
+var onBackKeyDown = function(){
+	document.removeEventListener("backbutton", onBackKeyDown, false); //注销返回键
+	//3秒后重新注册
+	var intervalID = window.setInterval(function(){
+		window.clearInterval(intervalID);
+		document.addEventListener("backbutton", onBackKeyDown, false); //返回键
+	}, 3000);
+}
+
+var onMenuKeyDown = function(){
+	bindSelectedMenu();
+}
+
+var onSearchKeyDown = function(){
+	
+}
 
 var bindEvent = function () {
     $("footer a:nth-child(1)").bind("click", function () {
@@ -64,12 +89,14 @@ var bindCategoryDishes = function () {
 };
 
 var initUI = function(){
-	$("header h1").text(menus.corp.name);
+	$("header>h1").text(menus.corp.name);
+	showInitErrMsg("初始化成功, 载入菜品.");
 	$("nav").html(Mustache.to_html($("#cateTmpl").html(), menus));
 	var dishesUI = Mustache.to_html($("#dishTmpl").html(), {dishes: menus.dishes});
 	$("section").html(dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
 	bindDishes();
 	bindEvent();
+	$("#cover").hide();
 }
 
 var bindDishes = function () {
