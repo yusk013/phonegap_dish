@@ -102,9 +102,9 @@ var initUI = function(){
 var bindDishes = function () {
     var page = menus.pages[pageIndex - 1];
     if (!page) return;
-	$("section>article").hide();
+	$("section>article").removeClass();
 	$.each(page.dishes, function(i){
-		$("section>article[data-id='" + page.dishes[i] + "']").show();
+		$("section>article[data-id='" + page.dishes[i] + "']").addClass("l_" + page.layout + "_" + i);
 	});
 	/*
     var currentDishes = [];
