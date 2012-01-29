@@ -11,51 +11,51 @@ var sltTmpl = "<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</
 */
 
 var onDeviceReady = function () {
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
-		fileSystem.root.getDirectory("eMenu", null, function(dirEntry){
-			entryPath = dirEntry.fullPath;
-			dirEntry.getFile("dishes.json", null, function(fileEntry){
-				fileEntry.file(function(file){
-					var reader = new FileReader();
-					reader.onloadend = function(evt) {
-						eval("menus = " + evt.target.result);
-						initUI();
-					};
-					reader.readAsText(file);
-				}, fail);
-			}, fail);
-		}, fail); 
-	}, fail);
-	document.addEventListener("backbutton", onBackKeyDown, false);
-	document.addEventListener("menubutton", onMenuKeyDown, false);
-	document.addEventListener("searchbutton", onSearchKeyDown, false);
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
+        fileSystem.root.getDirectory("eMenu", null, function (dirEntry) {
+            entryPath = dirEntry.fullPath;
+            dirEntry.getFile("dishes.json", null, function (fileEntry) {
+                fileEntry.file(function (file) {
+                    var reader = new FileReader();
+                    reader.onloadend = function (evt) {
+                        eval("menus = " + evt.target.result);
+                        initUI();
+                    };
+                    reader.readAsText(file);
+                }, fail);
+            }, fail);
+        }, fail);
+    }, fail);
+    document.addEventListener("backbutton", onBackKeyDown, false);
+    document.addEventListener("menubutton", onMenuKeyDown, false);
+    document.addEventListener("searchbutton", onSearchKeyDown, false);
 };
 
-var fail = function(error) {
-	console.log(error.code);
-	//alert("error:" + error.code);
-	showInitErrMsg("初始化失败(" + error.code + "), 请与厂家联系.")
+var fail = function (error) {
+    console.log(error.code);
+    //alert("error:" + error.code);
+    showInitErrMsg("初始化失败(" + error.code + "), 请与厂家联系.")
 };
 
-var showInitErrMsg = function(msg){
-	$("#cover a").text(msg);
+var showInitErrMsg = function (msg) {
+    $("#cover a").text(msg);
 }
 
-var onBackKeyDown = function(){
-	document.removeEventListener("backbutton", onBackKeyDown, false); //注销返回键
-	//3秒后重新注册
-	var intervalID = window.setInterval(function(){
-		window.clearInterval(intervalID);
-		document.addEventListener("backbutton", onBackKeyDown, false); //返回键
-	}, 3000);
+var onBackKeyDown = function () {
+    document.removeEventListener("backbutton", onBackKeyDown, false); //注销返回键
+    //3秒后重新注册
+    var intervalID = window.setInterval(function () {
+        window.clearInterval(intervalID);
+        document.addEventListener("backbutton", onBackKeyDown, false); //返回键
+    }, 3000);
 }
 
-var onMenuKeyDown = function(){
-	bindSelectedMenu();
+var onMenuKeyDown = function () {
+    bindSelectedMenu();
 }
 
-var onSearchKeyDown = function(){
-	
+var onSearchKeyDown = function () {
+
 }
 
 var bindEvent = function () {
@@ -78,56 +78,73 @@ var bindEvent = function () {
 };
 
 var bindCategoryDishes = function () {
+    /*
     var cid = parseInt(this.getAttribute("cid"));
     for (var i in menus.pages) {
-        if (menus.pages[i].cateId == cid) {
-            pageIndex = parseInt(i) + 1;
-            break;
-        }
+    if (menus.pages[i].cateId == cid) {
+    pageIndex = parseInt(i) + 1;
+    break;
     }
+    }
+    */
+    var pi = parseInt(this.getAttribute("data-pi"));
+    pageIndex = pi;
     bindDishes();
 };
 
-var initUI = function(){
-	$("header>h1").text(menus.corp.name);
-	showInitErrMsg("初始化成功, 载入菜品.");
-	$("nav").html(Mustache.to_html($("#cateTmpl").html(), menus));
-	var dishesUI = Mustache.to_html($("#dishTmpl").html(), {dishes: menus.dishes});
-	$("section").html(dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
-	bindDishes();
-	bindEvent();
-	$("#cover").hide();
+var initUI = function () {
+    if (menus == undefined) {
+        menus = menus2;
+    }
+    $("header>h1").text(menus.corp.name);
+    showInitErrMsg("初始化成功, 载入菜品.");
+    $("nav").html(Mustache.to_html($("#cateTmpl").html(), menus));
+    var dishesUI = Mustache.to_html($("#dishTmpl").html(), { dishes: menus.dishes });
+    $("section").html(dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
+    bindDishes();
+    bindEvent();
+    $("#cover").hide();
 }
 
 var bindDishes = function () {
     var page = menus.pages[pageIndex - 1];
     if (!page) return;
-	$("section>article").removeClass();
-	$.each(page.dishes, function(i){
-		$("section>article[data-id='" + page.dishes[i] + "']").addClass("l_" + page.layout + "_" + i);
-	});
-	/*
+    $("section>article").removeClass();
+    $.each(page.dishes, function (i) {
+        $("section>article[data-id='" + page.dishes[i] + "']").addClass("l_" + page.layout + "_" + i);
+    });
+    var cateid = 0;
+    $.each(menus.category, function (i, n) {
+        if (pageIndex >= n.pageIndex) {
+            cateid = n.id;
+        } else {
+            return false;
+        }
+    });
+    $("nav li").removeClass();
+    $("nav li>a[cid ='" + cateid + "']").parent().addClass('on');
+    /*
     var currentDishes = [];
     for (var j in page.dishes) {
-        for (var i in menus.dishes) {
-            if (page.dishes[j] == menus.dishes[i].id) {
-                currentDishes.push(menus.dishes[i]);
-                break;
-            }
-        }
+    for (var i in menus.dishes) {
+    if (page.dishes[j] == menus.dishes[i].id) {
+    currentDishes.push(menus.dishes[i]);
+    break;
+    }
+    }
     }
     var cateId = menus.pages[pageIndex - 1].cateId;
     if (cateId) {
-        $("body>nav>ul>li").removeClass();
-        $("body>nav>ul>li>a").each(function () {
-            var cid = parseInt($(this).attr('cid'));
-            if (cid == cateId) {
-                $(this).parent().addClass('on');
-            }
-        });
+    $("body>nav>ul>li").removeClass();
+    $("body>nav>ul>li>a").each(function () {
+    var cid = parseInt($(this).attr('cid'));
+    if (cid == cateId) {
+    $(this).parent().addClass('on');
+    }
+    });
     }
     $("section").html(Mustache.to_html(dishTmpl, { dishes: currentDishes }));
-	*/
+    */
 };
 
 var bindSelectedMenu = function () {

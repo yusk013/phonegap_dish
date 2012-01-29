@@ -14,7 +14,7 @@
 	-->
     <script type="text/javascript" src="app/index.js"></script>
 	<script id="cateTmpl" type="text/html">
-	<ul>{{#category}}<li><a cid='{{id}}'>{{name}}</a></li>{{/category}}</ul>
+	<ul>{{#category}}<li><a cid='{{id}}' data-pi='{{pageIndex}}'>{{name}}</a></li>{{/category}}</ul>
 	</script>
 	<script id="dishTmpl" type="text/html">
 	{{#dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='{{#count}}chk{{/count}}'>{{#count}}不要了{{/count}}{{^count}}点一个{{/count}}</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/dishes}}
@@ -45,7 +45,7 @@
     </div>
 	<div id="cover"><h1><a href="javascript:void(0)">请稍候，正在加载……</a></h1></div>
     <script type="text/javascript" charset="utf-8">
-        //initUI()
+        initUI();
     </script>
 </body>
 </html>
