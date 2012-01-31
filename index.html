@@ -43,7 +43,13 @@
         <div class="c">
             <a class="close">返回</a></div>
     </div>
-	<div id="cover"><h1><a href="javascript:void(0)">请稍候，正在加载……</a></h1></div>
+	<div id="cover"><h1><a href="javascript:void(0)">请稍候，正在加载……</a></h1><aside class="previewImg"></aside><aside class="progressBar"><div></div></aside></div>
+	<div id="mastermode">
+	<ul>
+	<li><a onclick="javascript:if(confirm('清除本地数据后会立即从服务器下载最新的数据，是否继续？')){window.localStorage.removeItem('dishes');initProfile();}">清除本地数据（完成后会重新从网络加载）</a></li>
+	<li><a onclick="javascript:alert('No way!')">清理菜品图片</a></li>
+	</ul>
+	</div>
     <script type="text/javascript" charset="utf-8">
         //initUI();
     </script>

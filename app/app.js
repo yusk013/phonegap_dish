@@ -29,6 +29,12 @@ var onMenuKeyDown = function() {
 };
 
 var onSearchKeyDown = function() {
+	$("#mastermode").toggle();
+};
+
+var onLoadStopped = function(){
+	isLoading = false;
+	$("#cover .progressBar").removeClass("progressBar");
 };
 
 var initProfile = function() {
@@ -81,7 +87,7 @@ var onLocalProfileError = function(e){
 		break;
 	default:
 		showCoverMsg("文件系统错误(" + e.code + ")，请与厂家联系。");
-		isLoading = false;
+		onLoadStopped();//isLoading = false;
 	}
 };
 
@@ -107,7 +113,7 @@ var updateProfile = function(){
 					showCoverMsg("开始下载\"" + d.name + "\"……");
 					//console.log("downloading crap to " + dlPath);
 					ft.download(remoteUrl + escape(fileName), dlPath,function(e){
-						//renderImg(e.fullPath);
+						renderImg(e.fullPath);
 						//console.log("download successful.");
 					},onImgDownloadError);
 				});
@@ -120,10 +126,14 @@ var updateProfile = function(){
 		error:function(xhr, type){
 			//alert(xhr);
 			showCoverMsg('下载配置文件错误，无法完成初始化，请与厂家联系。(' + type + ')');
-			isLoading = false;
 			console.log('got an ' + type + ', the data is :' + xhr.readyState);
+			onLoadStopped();
 		}
 	});
+};
+
+var renderImg = function(path){
+	$('#cover .previewImg').css("background-image", 'url(' +path + ')');
 };
 
 var saveNewProfile = function(){
@@ -147,7 +157,7 @@ var initUI = function() {
 	bindDishes();
 	bindEvent();
 	$("#cover").hide();
-	isLoading = false;
+	onLoadStopped();//isLoading = false;
 };
 
 var showCoverMsg = function(msg) {
