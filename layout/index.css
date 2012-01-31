@@ -96,7 +96,7 @@ body>div#selected {position:absolute;top:0em;bottom:0em;left:5em;right:5em; disp
 #selected a.close{background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fce302), color-stop(100%,#ffaf00));border:1px solid #e19c00;color:#650b0b;font-size:1.2em;padding:0.5em 2em;border-radius:2px;margin:2px auto;text-align:center}
 #selected a.close:active{border-color:#b16801;background: linear-gradient(top, #f0b900 0%,#bf6a00 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0b900), color-stop(100%,#bf6a00));}
 #selected a.close:hover{border-color:#b16801;background: linear-gradient(top, #f0b900 0%,#bf6a00 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0b900), color-stop(100%,#bf6a00));}
-#selected div.c { position:absolute; top:0.6em; height:50px; left:0; right:1em; text-align:right;}
+#selected div.c { position:absolute; height:1.5em; left:0; right:0; bottom:0; text-align:center;}
 #selected thead{color:#380000}
 #selected tbody{color:#843e1a; font-weight:bold;}
 #selected tr{border-bottom:1px solid black}
@@ -127,7 +127,7 @@ body>div#selected {position:absolute;top:0em;bottom:0em;left:5em;right:5em; disp
   background: -moz-linear-gradient(left, black, #eee, black);
   background: -ms-linear-gradient(left, black, #eee, black);
   background: -o-linear-gradient(left, black, #eee, black);
-  margin-top:200px;
+  margin-top:40%;
 }
 /*
 #cover h1:before {
@@ -154,3 +154,86 @@ body>div#selected {position:absolute;top:0em;bottom:0em;left:5em;right:5em; disp
   letter-spacing: 30px;
   color: white;
 }
+/* Progress Bar Styles */
+.progressBar {
+	width: 300px;
+	height: 15px;
+	border: 1px solid #ddd;
+	border-bottom-color: #666;
+	border-top-color: #999;
+	margin: 40px auto;
+	position: relative;
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+	box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+	background-color: rgb(56,138,213);
+	background-image:
+		-webkit-gradient(linear, 18 0, 0 10,
+			color-stop(0.23, rgba(255,255,255,0)),
+			color-stop(0.3, rgba(255,255,255,0.8)),
+			color-stop(0.3, rgba(255,255,255,1)),
+			color-stop(0.7, rgba(255,255,255,1)),
+			color-stop(0.7, rgba(255,255,255,0.8)),
+			color-stop(0.77, rgba(255,255,255,0))),
+		-webkit-gradient(linear, 0 0, 0 100%,
+			color-stop(0, rgba(255,255,255,.8)),
+			color-stop(0.45, rgba(255,255,255,.05)),
+			color-stop(0.55, rgba(0,0,0,.05)),
+			color-stop(0.85, rgba(0,0,0,.2)),
+			color-stop(0.98, rgba(0,0,0,.5))),
+		-webkit-gradient(linear, 0 0, 0 100%,
+			color-stop(0.20, transparent),
+			color-stop(0.20, rgba(255,255,255,.5)),
+			color-stop(0.32, rgba(255,255,255,.5)),
+			color-stop(0.32, transparent));
+	background-image:
+		-moz-linear-gradient(33deg, 
+			transparent,
+			transparent 10%, 
+			rgba(255,255,255,1) 10%, 
+			rgba(255,255,255,1) 44.5%, 
+			transparent 44.5%, 
+			transparent 70%, 
+			rgba(255,255,255,1) 70%,
+			rgba(255,255,255,1)),
+		-moz-linear-gradient(left,
+			rgba(0,0,0,.3) 5%,
+			rgba(255,255,255,.8) 6%,
+			rgba(255,255,255,.05) 45%,
+			rgba(0,0,0,.05) 55%,
+			rgba(0,0,0,.2) 85%,
+			rgba(0,0,0,.5) 98%),
+		-moz-linear-gradient(-90deg,
+			transparent,
+			transparent 29%,
+			rgba(255,255,255,.5) 29%,
+			rgba(255,255,255,.5) 49%,
+			transparent 49%,
+			transparent));
+	background-repeat: repeat-x;
+	-webkit-background-size: 20px 15px;
+	-webkit-background-position-x: 0%;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-name: progressBarAnim;
+	
+	-moz-background-size: 20px 20px;
+	-moz-background-position-x: 0%;
+	background-size: 20px 20px;
+	background-position-x: 0%;
+	
+}
+@-webkit-keyframes progressBarAnim {
+	0% { background-position-x:  0%; }
+	100% { background-position-x: 100%; }
+}
+@-moz-keyframes progressBarAnim {
+	0% { background-position-x:  0%; }
+	100% { background-position-x: 100%; }
+}
+@-keyframes progressBarAnim {
+	0% { background-position-x:  0%; }
+	100% { background-position-x: 100%; }
+}
+/* End Progress Bars */

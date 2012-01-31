@@ -31,24 +31,13 @@ var onMenuKeyDown = function() {
 var onSearchKeyDown = function() {
 };
 
-
-/*
- * Other version, load profile from localstorage.
-var initProfile = function(){
-	savedMenus = window.localStorage.getItem("dishes");
-	if((!savedMenus)||(needUpdate)){
-		updateProfile();
-	}
-	else{
-		initUI();
-	}
-};
-*/
-
 var initProfile = function() {
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,	function(fileSystem) {
 		fileSystem.root.getDirectory("eMenu", {create: true}, function(dirEntry) {
 			entryPath = dirEntry.fullPath;
+			/*
+			 * process mode 1: profile in sdcard
+			 * 
 			dirEntry.getFile("dishes.json", null, function(fileEntry) {
 				fileEntry.file(function(file) {
 					var reader = new FileReader();
@@ -64,23 +53,41 @@ var initProfile = function() {
 					reader.readAsText(file);
 				}, onLocalProfileError);
 			}, onLocalProfileError);
+			*/
+			/*
+			 * process mode 2: profile in localstorage
+			 */
+			var lsMenus = window.localStorage.getItem("dishes");
+			eval("localMenus = " + lsMenus);
+			//console.log("get local profile. data is " + localMenus.v);
+			if((!localMenus.v)||(needUpdate)){
+				showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。");
+				updateProfile();
+			}
+			else{
+				console.log("load local profile success.");// data is " + JSON.stringify(localMenus));
+				initUI();
+			}
 		}, onLocalProfileError);
 	}, onLocalProfileError);
 };
 
 var onLocalProfileError = function(e){
-	console.log('get local profile error, code is ' + e.code);
+	console.log('get sdcard profile error, code is ' + e.code);
 	switch(e.code){
-	case FileError.NOT_FOUND_ERR:
+	case FileError.NOT_FOUND_ERR://this may be used in sdcard/dishes.json.
 		showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。(" + e.code + ")");
 		updateProfile();
 		break;
+	default:
+		showCoverMsg("文件系统错误(" + e.code + ")，请与厂家联系。");
+		isLoading = false;
 	}
 };
 
 var updateProfile = function(){
-	var version = localMenus.v;
-	console.log("prepare to download file from " + remoteUrl);
+	var version = localMenus.v?localMenus.v:0;
+	console.log("prepare to get profile from " + remoteUrl);
 	$.ajax({
 		type:'GET',
 		url:remoteUrl + 'dishes.txt',
@@ -88,7 +95,7 @@ var updateProfile = function(){
 		dataType:'text',
 		async:true,
 		success:function(data){
-			console.log('got data: ' + data);
+			//console.log('got data: ' + data);
 			eval("var remoteMenus = " + data);
 			if(remoteMenus.v != version){
 				//compare image files
@@ -98,10 +105,10 @@ var updateProfile = function(){
 					var fileName = d.img;
 					var dlPath = entryPath + "/" + fileName;
 					showCoverMsg("开始下载\"" + d.name + "\"……");
-					console.log("downloading crap to " + dlPath);
+					//console.log("downloading crap to " + dlPath);
 					ft.download(remoteUrl + escape(fileName), dlPath,function(e){
 						//renderImg(e.fullPath);
-						console.log("download successful.");
+						//console.log("download successful.");
 					},onImgDownloadError);
 				});
 				showCoverMsg("下载完成，正在完成配置，请稍候。");
@@ -120,12 +127,12 @@ var updateProfile = function(){
 };
 
 var saveNewProfile = function(){
-	//window.localStorage.setItem("dishes", localMenus);
-	console.log("prepare save JSON to sdcard");
+	window.localStorage.setItem("dishes", JSON.stringify(localMenus));
+	console.log("save local profile successful.");
 };
 
 var onImgDownloadError = function(e){
-	concole.log('download image error' + e.code);
+	console.log('download image error (' + e.code + ').');
 };
 
 var initUI = function() {
