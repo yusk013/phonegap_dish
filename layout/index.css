@@ -592,7 +592,7 @@ body>div#selected {
 
 #cover .previewImg {
 	position: absolute;
-	top: 30%;
+	top: 50%;
 	left: 2em;
 	right: 2em;
 	height: 33%;
@@ -608,93 +608,3 @@ body>div#selected {
 	display:none;
 	background-color:darkgreen;
 }
-/* Progress Bar Styles */
-.progressBar {
-	border: 1px solid #ddd;
-	border-bottom-color: #666;
-	border-top-color: #999;
-	left: 2em;
-	right: 2em;
-	height: 1em;
-	bottom: 20%;
-	position: absolute;
-	-webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-	background-color: rgb(56, 138, 213);
-	background-image: -webkit-gradient(linear, 18 0, 0 10, color-stop(0.23, rgba(255, 255, 255
-		, 0) ), color-stop(0.3, rgba(255, 255, 255, 0.8) ),
-		color-stop(0.3, rgba(255, 255, 255, 1) ),
-		color-stop(0.7, rgba(255, 255, 255, 1) ),
-		color-stop(0.7, rgba(255, 255, 255, 0.8) ),
-		color-stop(0.77, rgba(255, 255, 255, 0) ) ),
-		-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, rgba(255, 255, 255,
-		.8) ), color-stop(0.45, rgba(255, 255, 255, .05) ),
-		color-stop(0.55, rgba(0, 0, 0, .05) ),
-		color-stop(0.85, rgba(0, 0, 0, .2) ),
-		color-stop(0.98, rgba(0, 0, 0, .5) ) ),
-		-webkit-gradient(linear, 0 0, 0 100%, color-stop(0.20, transparent),
-		color-stop(0.20, rgba(255, 255, 255, .5) ),
-		color-stop(0.32, rgba(255, 255, 255, .5) ),
-		color-stop(0.32, transparent) );
-	background-image: -moz-linear-gradient(33deg, transparent, transparent 10%, rgba(255, 255,
-		255, 1) 10%, rgba(255, 255, 255, 1) 44.5%, transparent 44.5%,
-		transparent 70%, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 1) ),
-		-moz-linear-gradient(left, rgba(0, 0, 0, .3) 5%,
-		rgba(255, 255, 255, .8) 6%, rgba(255, 255, 255, .05) 45%,
-		rgba(0, 0, 0, .05) 55%, rgba(0, 0, 0, .2) 85%, rgba(0, 0, 0, .5) 98% ),
-		-moz-linear-gradient(-90deg, transparent, transparent 29%, rgba(255, 255
-		, 255, .5) 29%, rgba(255, 255, 255, .5) 49%, transparent 49%,
-		transparent ) );
-	background-repeat: repeat-x;
-	-webkit-background-size: 20px 15px;
-	-webkit-background-position-x: 0%;
-	-webkit-animation-duration: 10s;
-	-webkit-animation-iteration-count: infinite;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-name: progressBarAnim;
-	-moz-background-size: 20px 20px;
-	-moz-background-position-x: 0%;
-	background-size: 20px 20px;
-	background-position-x: 0%;
-}
-
-@
--webkit-keyframes progressBarAnim { 0% {
-	background-position-x: 0%;
-}
-
-100%
-{
-background-position-x
-:
- 
-100%;
-}
-}
-@
--moz-keyframes progressBarAnim { 0% {
-	background-position-x: 0%;
-}
-
-100%
-{
-background-position-x
-:
- 
-100%;
-}
-}
-@
--keyframes progressBarAnim { 0% {
-	background-position-x: 0%;
-}
-100%
-{
-background-position-x
-:
- 
-100%;
-}
-}
-/* End Progress Bars */

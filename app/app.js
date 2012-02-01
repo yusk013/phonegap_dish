@@ -119,10 +119,6 @@ var updateProfile = function() {
 		dataType : 'text',
 		async : true,
 		success : function(data) {
-			var renderImg = function(path) {
-				$('#cover .previewImg').css("background-image",
-						'url(' + path + ')');
-			};
 
 			var saveNewProfile = function() {
 				window.localStorage.setItem("dishes", JSON
@@ -134,40 +130,40 @@ var updateProfile = function() {
 			eval("var remoteMenus = " + data);
 			if (remoteMenus.v != version) {
 				// compare image files
-				console.log("image download needed, v = " + remoteMenus.v);
+				var i = 0, dishes = remoteMenus.dishes, f = dishes.length;
+				console.log(f + " image file(s) download needed, v = " + remoteMenus.v);
+				
 				var onImgDownloadComplate = function() {
 					showCoverMsg("下载完成，正在完成配置，请稍候。");
 					localMenus = remoteMenus;
 					saveNewProfile();
 					initUI();
 				};
-				
-				var i = 0, dishes = remoteMenus.dishes, f = dishes.length;
 				var onImgDownloadError = function(e) {
 					console.log('download image error (' + e.code + ').');
 					isDownloadEnded();
 				};
 				var isDownloadEnded = function(){
 					i++;
-					console.log("prepare download " + i + " of " + f + ".");
+					//console.log("prepare download " + i + " of " + f + ".");
 					if (i >= f) {
 						onImgDownloadComplate();
 					} else {
 						imgDownload();
 					}
-
-				}
+				};
 				var imgDownload = function() {
 					var ft = new FileTransfer();
 					var d = dishes[i];
 					var fileName = d.img;
 					var dlPath = entryPath + "/" + fileName;
-					showCoverMsg("开始下载第" + i + "个：\"" + d.name + "\"，共" + f + "个。");
-					console.log("downloading crap to " + dlPath);
+					showCoverMsg("开始下载菜品照片，请稍候……\r\n(" + (i + 1) + "/" + f + ")");
+					//console.log("downloading crap to " + dlPath);
 					ft.download(remoteUrl + escape(fileName), dlPath, function(
 							e) {
-						renderImg(e.fullPath);
-						console.log("download \"" + dlPath + "\" successful.");
+						$('#cover .previewImg').css("background-image",
+								'url(' + e.fullPath + ')');
+						//console.log("download \"" + dlPath + "\" successful.");
 						isDownloadEnded();
 					}, onImgDownloadError);
 				};
