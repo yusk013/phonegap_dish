@@ -54,7 +54,7 @@ var initProfile = function() {
 		console.log('get sdcard profile error, code is ' + e.code);
 		switch (e.code) {
 		case FileError.NOT_FOUND_ERR:// this may be used in
-										// sdcard/dishes.json.
+			// sdcard/dishes.json.
 			showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。(" + e.code + ")");
 			updateProfile();
 			break;
@@ -102,10 +102,11 @@ var initProfile = function() {
 };
 
 var updateProfile = function() {
-	var version = 0;
+	var version;
 	try {
 		version = localMenus.v;
 	} catch (e) {
+		version = 0;
 		console.log("get local profile version error(" + e + ").");
 	}
 	console.log("prepare to get profile from " + remoteUrl);
@@ -129,30 +130,51 @@ var updateProfile = function() {
 				console.log("save local profile successful.");
 			};
 
-			var onImgDownloadError = function(e) {
-				console.log('download image error (' + e.code + ').');
-			};
-
-			// console.log('got data: ' + data);
+			//console.log('got data: ' + data);
 			eval("var remoteMenus = " + data);
 			if (remoteMenus.v != version) {
 				// compare image files
-				// download needed
-				$.each(remoteMenus.dishes, function(i, d) {
+				console.log("image download needed, v = " + remoteMenus.v);
+				var onImgDownloadComplate = function() {
+					showCoverMsg("下载完成，正在完成配置，请稍候。");
+					localMenus = remoteMenus;
+					saveNewProfile();
+					initUI();
+				};
+				
+				var i = 0, dishes = remoteMenus.dishes, f = dishes.length;
+				var onImgDownloadError = function(e) {
+					console.log('download image error (' + e.code + ').');
+					isDownloadEnded();
+				};
+				var isDownloadEnded = function(){
+					i++;
+					console.log("prepare download " + i + " of " + f + ".");
+					if (i >= f) {
+						onImgDownloadComplate();
+					} else {
+						imgDownload();
+					}
+
+				}
+				var imgDownload = function() {
 					var ft = new FileTransfer();
+					var d = dishes[i];
 					var fileName = d.img;
 					var dlPath = entryPath + "/" + fileName;
-					showCoverMsg("开始下载\"" + d.name + "\"……");
-					// console.log("downloading crap to " + dlPath);
+					showCoverMsg("开始下载第" + i + "个：\"" + d.name + "\"，共" + f + "个。");
+					console.log("downloading crap to " + dlPath);
 					ft.download(remoteUrl + escape(fileName), dlPath, function(
 							e) {
 						renderImg(e.fullPath);
-						// console.log("download successful.");
+						console.log("download \"" + dlPath + "\" successful.");
+						isDownloadEnded();
 					}, onImgDownloadError);
-				});
-				showCoverMsg("下载完成，正在完成配置，请稍候。");
-				localMenus = remoteMenus;
-				saveNewProfile();
+				};
+				
+				imgDownload();
+			} else {
+				console.log("no more new image need download. initUI now.")
 				initUI();
 			}
 		},
