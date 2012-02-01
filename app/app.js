@@ -9,31 +9,30 @@ var localMenus = {
 var isLoading = true;
 
 var onDeviceReady = function() {
+	var onBackKeyDown = function() {
+		if (isLoading)
+			return;
+		document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键
+		// 3秒后重新注册
+		var intervalID = window.setInterval(function() {
+			window.clearInterval(intervalID);
+			document.addEventListener("backbutton", onBackKeyDown, false); // 返回键
+		}, 3000);
+	};
+
+	var onMenuKeyDown = function() {
+		if (isLoading)
+			return;
+		bindSelectedMenu();
+	};
+
+	var onSearchKeyDown = function() {
+		$("#mastermode").toggle();
+	};
 	document.addEventListener("backbutton", onBackKeyDown, false);
 	document.addEventListener("menubutton", onMenuKeyDown, false);
 	document.addEventListener("searchbutton", onSearchKeyDown, false);
 	initProfile();
-};
-
-var onBackKeyDown = function() {
-	if (isLoading)
-		return;
-	document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键
-	// 3秒后重新注册
-	var intervalID = window.setInterval(function() {
-		window.clearInterval(intervalID);
-		document.addEventListener("backbutton", onBackKeyDown, false); // 返回键
-	}, 3000);
-};
-
-var onMenuKeyDown = function() {
-	if (isLoading)
-		return;
-	bindSelectedMenu();
-};
-
-var onSearchKeyDown = function() {
-	$("#mastermode").toggle();
 };
 
 var onLoadStopped = function() {
@@ -44,13 +43,27 @@ var onLoadStopped = function() {
 var onResetData = function() {
 	if (confirm('清除本地数据后，您会在下次启动电子菜单时从服务器获得最新的数据，是否继续？')) {
 		window.localStorage.removeItem('dishes');
-		//$('#cover').show();
-		//initProfile();
+		// $('#cover').show();
+		// initProfile();
 		$('#mastermode').hide();
 	}
 };
 
 var initProfile = function() {
+	var onLocalProfileError = function(e) {
+		console.log('get sdcard profile error, code is ' + e.code);
+		switch (e.code) {
+		case FileError.NOT_FOUND_ERR:// this may be used in
+										// sdcard/dishes.json.
+			showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。(" + e.code + ")");
+			updateProfile();
+			break;
+		default:
+			showCoverMsg("文件系统错误(" + e.code + ")，请与厂家联系。");
+			onLoadStopped();// isLoading = false;
+		}
+	};
+
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
 			function(fileSystem) {
 				fileSystem.root.getDirectory("eMenu", {
@@ -80,25 +93,12 @@ var initProfile = function() {
 						updateProfile();
 					} else {
 						console.log("load local profile success.");// data is "
-																	// +
-																	// JSON.stringify(localMenus));
+						// +
+						// JSON.stringify(localMenus));
 						initUI();
 					}
 				}, onLocalProfileError);
 			}, onLocalProfileError);
-};
-
-var onLocalProfileError = function(e) {
-	console.log('get sdcard profile error, code is ' + e.code);
-	switch (e.code) {
-	case FileError.NOT_FOUND_ERR:// this may be used in sdcard/dishes.json.
-		showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。(" + e.code + ")");
-		updateProfile();
-		break;
-	default:
-		showCoverMsg("文件系统错误(" + e.code + ")，请与厂家联系。");
-		onLoadStopped();// isLoading = false;
-	}
 };
 
 var updateProfile = function() {
@@ -118,6 +118,21 @@ var updateProfile = function() {
 		dataType : 'text',
 		async : true,
 		success : function(data) {
+			var renderImg = function(path) {
+				$('#cover .previewImg').css("background-image",
+						'url(' + path + ')');
+			};
+
+			var saveNewProfile = function() {
+				window.localStorage.setItem("dishes", JSON
+						.stringify(localMenus));
+				console.log("save local profile successful.");
+			};
+
+			var onImgDownloadError = function(e) {
+				console.log('download image error (' + e.code + ').');
+			};
+
 			// console.log('got data: ' + data);
 			eval("var remoteMenus = " + data);
 			if (remoteMenus.v != version) {
@@ -148,19 +163,6 @@ var updateProfile = function() {
 			onLoadStopped();
 		}
 	});
-};
-
-var renderImg = function(path) {
-	$('#cover .previewImg').css("background-image", 'url(' + path + ')');
-};
-
-var saveNewProfile = function() {
-	window.localStorage.setItem("dishes", JSON.stringify(localMenus));
-	console.log("save local profile successful.");
-};
-
-var onImgDownloadError = function(e) {
-	console.log('download image error (' + e.code + ').');
 };
 
 var initUI = function() {
