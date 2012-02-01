@@ -1,9 +1,11 @@
 ﻿var pageIndex = 1;
 var pageSize = 3;
 var entryPath = '/mnt/sdcard/eMenu';
-var remoteUrl = 'http://218.206.201.27:8088/download/10001/';//'http://35918.cn/dishes/demo/';
+var remoteUrl = 'http://218.206.201.27:8088/download/10001/';// 'http://35918.cn/dishes/demo/';
 var needUpdate = false;
-var localMenus = {v:0};
+var localMenus = {
+	v : 0
+};
 var isLoading = true;
 
 var onDeviceReady = function() {
@@ -14,7 +16,8 @@ var onDeviceReady = function() {
 };
 
 var onBackKeyDown = function() {
-	if(isLoading)return;
+	if (isLoading)
+		return;
 	document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键
 	// 3秒后重新注册
 	var intervalID = window.setInterval(function() {
@@ -24,7 +27,8 @@ var onBackKeyDown = function() {
 };
 
 var onMenuKeyDown = function() {
-	if(isLoading)return;
+	if (isLoading)
+		return;
 	bindSelectedMenu();
 };
 
@@ -32,90 +36,104 @@ var onSearchKeyDown = function() {
 	$("#mastermode").toggle();
 };
 
-var onLoadStopped = function(){
+var onLoadStopped = function() {
 	isLoading = false;
 	$("#cover .progressBar").removeClass("progressBar");
 };
 
-var initProfile = function() {
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,	function(fileSystem) {
-		fileSystem.root.getDirectory("eMenu", {create: true}, function(dirEntry) {
-			entryPath = dirEntry.fullPath;
-			/*
-			 * process mode 1: profile in sdcard
-			 * 
-			dirEntry.getFile("dishes.json", null, function(fileEntry) {
-				fileEntry.file(function(file) {
-					var reader = new FileReader();
-					reader.onloadend = function(evt) {
-						eval("localMenus = " + evt.target.result);
-						if(needUpdate){
-							updateProfile();
-						}
-						else{
-							initUI();
-						}
-					};
-					reader.readAsText(file);
-				}, onLocalProfileError);
-			}, onLocalProfileError);
-			*/
-			/*
-			 * process mode 2: profile in localstorage
-			 */
-			var lsMenus = window.localStorage.getItem("dishes");
-			eval("localMenus = " + lsMenus);
-			//console.log("get local profile. data is " + localMenus.v);
-			if((!localMenus.v)||(needUpdate)){
-				showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。");
-				updateProfile();
-			}
-			else{
-				console.log("load local profile success.");// data is " + JSON.stringify(localMenus));
-				initUI();
-			}
-		}, onLocalProfileError);
-	}, onLocalProfileError);
+var onResetData = function() {
+	if (confirm('清除本地数据后，您会在下次启动电子菜单时从服务器获得最新的数据，是否继续？')) {
+		window.localStorage.removeItem('dishes');
+		//$('#cover').show();
+		//initProfile();
+		$('#mastermode').hide();
+	}
 };
 
-var onLocalProfileError = function(e){
+var initProfile = function() {
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+			function(fileSystem) {
+				fileSystem.root.getDirectory("eMenu", {
+					create : true
+				}, function(dirEntry) {
+					entryPath = dirEntry.fullPath;
+					/*
+					 * process mode 1: profile in sdcard
+					 * 
+					 * dirEntry.getFile("dishes.json", null, function(fileEntry) {
+					 * fileEntry.file(function(file) { var reader = new
+					 * FileReader(); reader.onloadend = function(evt) {
+					 * eval("localMenus = " + evt.target.result);
+					 * if(needUpdate){ updateProfile(); } else{ initUI(); } };
+					 * reader.readAsText(file); }, onLocalProfileError); },
+					 * onLocalProfileError);
+					 */
+					/*
+					 * process mode 2: profile in localstorage
+					 */
+					var lsMenus = window.localStorage.getItem("dishes");
+					eval("localMenus = " + lsMenus);
+					// console.log("get local profile. data is " +
+					// localMenus.v);
+					if ((!localMenus) || (needUpdate)) {
+						showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。");
+						updateProfile();
+					} else {
+						console.log("load local profile success.");// data is "
+																	// +
+																	// JSON.stringify(localMenus));
+						initUI();
+					}
+				}, onLocalProfileError);
+			}, onLocalProfileError);
+};
+
+var onLocalProfileError = function(e) {
 	console.log('get sdcard profile error, code is ' + e.code);
-	switch(e.code){
-	case FileError.NOT_FOUND_ERR://this may be used in sdcard/dishes.json.
+	switch (e.code) {
+	case FileError.NOT_FOUND_ERR:// this may be used in sdcard/dishes.json.
 		showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。(" + e.code + ")");
 		updateProfile();
 		break;
 	default:
 		showCoverMsg("文件系统错误(" + e.code + ")，请与厂家联系。");
-		onLoadStopped();//isLoading = false;
+		onLoadStopped();// isLoading = false;
 	}
 };
 
-var updateProfile = function(){
-	var version = localMenus.v?localMenus.v:0;
+var updateProfile = function() {
+	var version = 0;
+	try {
+		version = localMenus.v;
+	} catch (e) {
+		console.log("get local profile version error(" + e + ").");
+	}
 	console.log("prepare to get profile from " + remoteUrl);
 	$.ajax({
-		type:'GET',
-		url:remoteUrl + 'dishes.txt',
-		data:{v:version},
-		dataType:'text',
-		async:true,
-		success:function(data){
-			//console.log('got data: ' + data);
+		type : 'GET',
+		url : remoteUrl + 'dishes.txt',
+		data : {
+			v : version
+		},
+		dataType : 'text',
+		async : true,
+		success : function(data) {
+			// console.log('got data: ' + data);
 			eval("var remoteMenus = " + data);
-			if(remoteMenus.v != version){
-				//compare image files
-				//download needed
-				$.each(remoteMenus.dishes, function(i, d){
+			if (remoteMenus.v != version) {
+				// compare image files
+				// download needed
+				$.each(remoteMenus.dishes, function(i, d) {
 					var ft = new FileTransfer();
 					var fileName = d.img;
 					var dlPath = entryPath + "/" + fileName;
 					showCoverMsg("开始下载\"" + d.name + "\"……");
-					//console.log("downloading crap to " + dlPath);
-					ft.download(remoteUrl + escape(fileName), dlPath,function(e){
+					// console.log("downloading crap to " + dlPath);
+					ft.download(remoteUrl + escape(fileName), dlPath, function(
+							e) {
 						renderImg(e.fullPath);
-						//console.log("download successful.");
-					},onImgDownloadError);
+						// console.log("download successful.");
+					}, onImgDownloadError);
 				});
 				showCoverMsg("下载完成，正在完成配置，请稍候。");
 				localMenus = remoteMenus;
@@ -123,8 +141,8 @@ var updateProfile = function(){
 				initUI();
 			}
 		},
-		error:function(xhr, type){
-			//alert(xhr);
+		error : function(xhr, type) {
+			// alert(xhr);
 			showCoverMsg('下载配置文件错误，无法完成初始化，请与厂家联系。(' + type + ')');
 			console.log('got an ' + type + ', the data is :' + xhr.readyState);
 			onLoadStopped();
@@ -132,16 +150,16 @@ var updateProfile = function(){
 	});
 };
 
-var renderImg = function(path){
-	$('#cover .previewImg').css("background-image", 'url(' +path + ')');
+var renderImg = function(path) {
+	$('#cover .previewImg').css("background-image", 'url(' + path + ')');
 };
 
-var saveNewProfile = function(){
+var saveNewProfile = function() {
 	window.localStorage.setItem("dishes", JSON.stringify(localMenus));
 	console.log("save local profile successful.");
 };
 
-var onImgDownloadError = function(e){
+var onImgDownloadError = function(e) {
 	console.log('download image error (' + e.code + ').');
 };
 
@@ -153,11 +171,11 @@ var initUI = function() {
 		dishes : localMenus.dishes
 	});
 	$("section").html(
-		dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
+			dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
 	bindDishes();
 	bindEvent();
 	$("#cover").hide();
-	onLoadStopped();//isLoading = false;
+	onLoadStopped();// isLoading = false;
 };
 
 var showCoverMsg = function(msg) {
@@ -212,7 +230,6 @@ var bindCategoryDishes = function() {
 	pageIndex = pi;
 	bindDishes();
 };
-
 
 var bindSelectedMenu = function() {
 	var menuList = [];
