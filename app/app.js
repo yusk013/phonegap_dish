@@ -206,11 +206,13 @@ var bindDishes = function() {
 	var page = localMenus.pages[pageIndex - 1];
 	if (!page)
 		return;
+	$("article.show section.dish").removeClass("cover");
 	$("section>article").removeClass();
 	$.each(page.dishes, function(i) {
 		$("section>article[data-id='" + page.dishes[i] + "']").addClass(
-				"l_" + page.layout + "_" + i);
+				"l_" + page.layout + "_" + i + " show");
 	});
+	setTimeout(function(){$("article.show section.dish").addClass("cover");}, 200);
 	var cateid = 0;
 	$.each(localMenus.category, function(i, n) {
 		if (pageIndex >= n.pageIndex) {

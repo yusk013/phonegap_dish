@@ -101,6 +101,8 @@ article>section.dish {
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position:50% 50%;
+	-webkit-transform: scale(0.8);
+	-webkit-transition: -webkit-transform 1s ease-in-out;
 }
 
 article>section.des {
@@ -111,6 +113,9 @@ article>section.des {
 	padding: 0.5em;
 	height: 25%;
 	overflow: auto
+}
+article>section.cover{
+	-webkit-transform: scale(1);
 }
 
 article>section.slt {
