@@ -1,6 +1,13 @@
 ﻿/**reset**/
-* {
+
+*{
 	font-size: 16px;
+}
+
+@media (min-width: 1200px), (min-height: 1200px){
+	*{
+		font-size:20px;
+	}
 }
 
 ul,h1,h2 {
@@ -92,7 +99,8 @@ article>section.dish {
 	top: 0;
 	height: 75%;
 	background-repeat: no-repeat;
-	background-size: 100%;
+	background-size: cover;
+	background-position:50% 50%;
 }
 
 article>section.des {
