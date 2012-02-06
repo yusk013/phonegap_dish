@@ -3,9 +3,13 @@ var pageSize = 3;
 var entryPath = '/mnt/sdcard/eMenu';
 var remoteUrl = 'http://218.206.201.27:8088/download/10001/';// 'http://35918.cn/dishes/demo/';
 var needUpdate = false;
+/*
 var localMenus = {
 	v : 0
 };
+*/
+var localMenus = dishes;
+
 var isLoading = true;
 
 var onDeviceReady = function() {
@@ -170,7 +174,7 @@ var updateProfile = function() {
 				
 				imgDownload();
 			} else {
-				console.log("no more new image need download. initUI now.")
+				console.log("no more new image need download. initUI now.");
 				initUI();
 			}
 		},
@@ -192,8 +196,8 @@ var initUI = function() {
 	});
 	$("section").html(
 			dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
-	bindDishes();
-	bindEvent();
+	//bindDishes();
+	//bindEvent();
 	$("#cover").hide();
 	onLoadStopped();// isLoading = false;
 };

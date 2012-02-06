@@ -1,3 +1,5 @@
+2012-2-6
+test git branch
 2012-1-27
 cover added, display before all dishes created, display message when load external file error.
 handle back button, exit application when press back button twice in 3 seconds.
