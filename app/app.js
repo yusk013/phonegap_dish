@@ -1,11 +1,10 @@
-﻿var pageIndex = 1;
-var entryPath = '/mnt/sdcard/eMenu';
+﻿var entryPath = '/mnt/sdcard/eMenu';
 var remoteUrl = 'http://218.206.201.27:8088/download/10001/';// 'http://35918.cn/dishes/demo/';
 var needUpdate = false;
-var pages = 0;
 var mainScroll;
 var selectedDishes = "";
 var localMenus = { v : 0 };
+var corpName = "Womobo Inc.";
 
 var isLoading = true;
 
@@ -24,7 +23,8 @@ var onDeviceReady = function() {
 	var onMenuKeyDown = function() {
 		if (isLoading)
 			return;
-		bindSelectedMenu();
+		//bindSelectedMenu();
+		$("#selectBtn").trigger("click");
 	};
 
 	var onSearchKeyDown = function() {
@@ -38,7 +38,6 @@ var onDeviceReady = function() {
 
 var onLoadStopped = function() {
 	isLoading = false;
-	$("#cover .progressBar").removeClass("progressBar");
 };
 
 var onResetData = function() {
@@ -206,13 +205,13 @@ var initUI = function() {
 		// return the finished buffer
 		return buffer;
 	});
-
-	$("header>h1").text(localMenus.corp.name);
+	corpName = localMenus.corp.name;
+	$("header>h1").text(corpName);
 	var tmpl = Handlebars.compile($("#cateTmpl").html());
 	$("nav").html(tmpl(localMenus));
 
 	var localDishes = localMenus.dishes;
-	pages = localDishes.length;
+	var pages = localDishes.length;
 
 	showCoverMsg("初始化成功, 载入菜品.");
 
@@ -265,20 +264,9 @@ var showCoverMsg = function(msg) {
 	$("#cover a").text(msg);
 };
 
-/*
- * var bindDishes = function() { var page = localMenus.pages[pageIndex - 1]; if
- * (!page) return; $("article.show section.dish").removeClass("cover");
- * $("section>article").removeClass(); $.each(page.dishes, function(i) {
- * $("section>article[data-id='" + page.dishes[i] + "']").addClass( "l_" +
- * page.layout + "_" + i + " show"); }); setTimeout(function() { $("article.show
- * section.dish").addClass("cover"); }, 200); var cateid = 0;
- * $.each(localMenus.category, function(i, n) { if (pageIndex >= n.pageIndex) {
- * cateid = n.id; } else { return false; } }); $("nav li").removeClass(); $("nav
- * li>a[cid ='" + cateid + "']").parent().addClass('on'); };
- */
-
 var bindEvent = function() {
 	$("#promoBtn").click(function() {
+		$("header h1").html("今日特选");
 		$("#promotion a").each(function(){
 			thisPi = "[" + $(this).attr("data-pi") + "]";
 			if(selectedDishes.indexOf(thisPi) == -1){
@@ -291,6 +279,7 @@ var bindEvent = function() {
 		$("#promotion").toggleClass("front");
 	});
 	$("#selectBtn").click(function(){
+		$("header h1").html("已点菜品");
 		var listStrLength = selectedDishes.length;
 		var currentDishes = [];
 		if(listStrLength > 3){
@@ -309,6 +298,7 @@ var bindEvent = function() {
 		$("#selected").toggleClass("front");
 	});
 	$("nav li a").bind("click", function() {
+		$("header h1").html(corpName);
 		$("aside.front").removeClass();
 		var pi = parseInt(this.getAttribute("data-pi"));
 		mainScroll.scrollToPage(0, pi - 1, 500);
@@ -325,7 +315,7 @@ var bindEvent = function() {
 			$(this).addClass("chk");
 		}
 		console.log("dishes: " + selectedDishes);
-		$("#selectBtn").html(selectedDishes.split("/").length - 1);
+		$("#selectBtn span").html(selectedDishes.split("/").length - 1);
 	});
 	$("#promotion section.slt a").click(function(){
 		var piData = $(this).attr("data-pi");
@@ -334,63 +324,5 @@ var bindEvent = function() {
 		$(this).toggleClass("chk");
 	});
 };
-/*
-var bindSelectedMenu = function() {
-	var menuList = [];
-	var total = 0;
-	var vtotal = 0;
-	$.each(localMenus.dishes, function(i, n) {
-		if (n.count > 0) {
-			menuList.push(n);
-			total += n.price;
-			vtotal += n.vipPrice;
-		}
-	});
-	var sltDishTxt = "已点菜品(" + menuList.length + ")";
-	$("#selected h2").text(sltDishTxt);
-	if (menuList.length > 0) {
-		$("#selected div.t").html(Mustache.to_html($("#sltTmpl").html(), {
-			dishes : menuList,
-			total : total,
-			vTotal : vtotal
-		}));
-	} else {
-		$("#selected div.t").html("<tr><th>您还未点菜，请点击“返回”点菜</th>");
-	}
-	menuShow();
-};
-var menuShow = function() {
-	$("#selected").css('top', '100%').show();
-	$("#selected").animate({
-		'top' : 0
-	}, 1000);
-};
-var menuClose = function() {
-	$("#selected").hide();
-};
 
-var selectdDish = function() {
-	var dishId = parseInt($(this).parent().parent("article").attr('data-id'));
-	var isChk = !$(this).hasClass('chk');
-	$(this).toggleClass('chk');
-	var count = 0;
-	if (isChk) {
-		count = 1;
-		$(this).text('不要了');
-	} else {
-		$(this).text('点一个');
-	}
-	var sltCount = 0;
-	$.each(localMenus.dishes, function(i, n) {
-		if (n.id == dishId) {
-			n.count = count;
-		}
-		if (n.count > 0) {
-			sltCount++;
-		}
-	});
-	var sltDishTxt = "已点菜品(" + sltCount + ")";
-	$("footer a").eq(1).text(sltDishTxt);
-};
-*/
 document.addEventListener("deviceready", onDeviceReady, false);

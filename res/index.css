@@ -47,10 +47,12 @@ article {
 	display: block;
 	background-color: #380000;
 }
-article>header{
-	position:relative;
-	z-index:5;
+
+article>header {
+	position: relative;
+	z-index: 5;
 }
+
 article>section.dish {
 	position: absolute;
 	left: 0;
@@ -88,12 +90,14 @@ article>section.slt {
 	bottom: 0;
 	text-align: center;
 	right: 0;
-	z-index:8;
+	z-index: 8;
 }
-article>section.price{
-	position:relative;
-	z-index:6;
+
+article>section.price {
+	position: relative;
+	z-index: 6;
 }
+
 article>section.price>ul li {
 	list-style: none
 }
@@ -229,16 +233,48 @@ aside.front {
 }
 
 /*start selection*/
-#selectBtn{
+#selectBtn {
 	position: fixed;
-	width:2em;
-	height:2em;
-	right:0;
-	bottom:0;
-	background: url(selected.png)  50% 50% no-repeat;
+	width: 2em;
+	height: 2em;
+	right: 0;
+	bottom: 0;
+	background: url(selected.png) 50% 50% no-repeat;
 	background-size: 100%;
-	z-index:20;
+	z-index: 20;
 }
+
+#selectBtn span {
+	position: absolute;
+	top: -1em;
+	right: 0;
+	height: 1em;
+	line-height: 1em;
+	font-size: 0.6em;
+	color: white;
+	border: 3px solid white;
+	background-color: #380000;
+	border-radius: 1em;
+	padding: 0 5px;
+}
+
+#selectBtn span::before {
+	position: absolute;
+	content: ' ';
+	width: 100%;
+	height: 50%;
+	top: 0;
+	left: 0;
+	border-top-left-radius: 1em; border-top-right-radius : 1em;
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.6) 0%,
+		rgba(255, 255, 255, .15) 100% );
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,
+		255, 255, 0.6) ), color-stop(100%, rgba(255, 255, 255, .15) ) );
+	background: linear-gradient(top, rgba(255, 255, 255, 0.6) 0%,
+		rgba(255, 255, 255, .15) 100% );
+	border-top-right-radius: 1em;
+}
+
 #selected {
 	position: fixed;
 	top: 2em;
