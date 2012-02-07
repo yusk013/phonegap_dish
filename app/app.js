@@ -204,7 +204,8 @@ var initUI = function() {
 	var mainViewWrap = $("body>section");
 	
 	var mainViewWrapHeight = mainViewWrap.height();
-	$("#initStyle").html(".page{height:" + mainViewWrapHeight + "px;}.scroll{height:" + (mainViewWrapHeight * pages) + "px;}");
+	var initProperty = {wrapHeight: mainViewWrapHeight, scrollHeight: (mainViewWrapHeight * pages)};
+	$("#initStyle").html(Mustache.to_html($("#initStyleTmpl").html(),initProperty));
 	
 	var dishTmpl = localURI($("#dishTmpl").html());
 	var dishesUI = Mustache.to_html(dishTmpl, {
@@ -227,7 +228,7 @@ var initUI = function() {
 		var promoItem = localDishes[p[0] - 1].items[p[1] - 1];
 		promotions.push(promoItem);
 	});
-	var promoUI = Mustache.to_html("{{#dishes}}<b>{{name}}</b>{{/dishes}}", {dishes: promotions});
+	var promoUI = Mustache.to_html($("#promoTmpl").html(), {dishes: promotions});
 	//console.log(promoUI);
 	$("#promotion").html(promoUI);
 	//bindDishes();
