@@ -265,7 +265,8 @@ aside.front {
 	height: 50%;
 	top: 0;
 	left: 0;
-	border-top-left-radius: 1em; border-top-right-radius : 1em;
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
 	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.6) 0%,
 		rgba(255, 255, 255, .15) 100% );
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,
@@ -462,20 +463,21 @@ header>h1 {
 		255, 255, 0.3) ), color-stop(100%, rgba(255, 255, 255, 0) ) );
 }
 
-header>h1:before {
-	display: inline-block;
-	width: 175px;
-	background: url(top_left.png) 100% 50% no-repeat;
-	content: '&';
-	text-indent: -9999px;
-}
-
-header>h1:after {
-	display: inline-block;
-	width: 175px;
-	background: url(top_right.png) 100% 50% no-repeat;
-	content: '&';
-	text-indent: -9999px;
+@media ( min-width : 800px) {
+	header>h1:before {
+		display: inline-block;
+		width: 175px;
+		background: url(top_left.png) 100% 50% no-repeat;
+		content: '&';
+		text-indent: -9999px;
+	}
+	header>h1:after {
+		display: inline-block;
+		width: 175px;
+		background: url(top_right.png) 100% 50% no-repeat;
+		content: '&';
+		text-indent: -9999px;
+	}
 }
 
 section>article {
