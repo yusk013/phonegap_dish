@@ -8,6 +8,7 @@
     <script type="text/javascript" src="lib/zepto.min.js"></script>
     <script type="text/javascript" src="lib/mustache.js"></script>
     <script type="text/javascript" src="lib/JSON2.min.js"></script>
+    <script type="text/javascript" src="lib/iscroll.js"></script>
 	<!--
     <script type="text/javascript" src="lib/underscore-min.js"></script>
     <script type="text/javascript" src="lib/backbone-min.js"></script>
@@ -18,18 +19,19 @@
 	<ul>{{#category}}<li><a cid='{{id}}' data-pi='{{pageIndex}}'>{{name}}</a></li>{{/category}}</ul>
 	</script>
 	<script id="dishTmpl" type="text/html">
-	{{#dishes}}<div data-layout='{{layout}}'>{{#items}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='{{#count}}chk{{/count}}'>{{#count}}不要了{{/count}}{{^count}}点一个{{/count}}</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/items}}</div>{{/dishes}}
+	<div id="#mainView" class="scroll">{{#dishes}}<div data-layout='{{layout}}' class="page">{{#items}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a class='{{#count}}chk{{/count}}'>{{#count}}不要了{{/count}}{{^count}}点一个{{/count}}</a><!--<a class='sub'>-</a><input type='text' readonly value='{{count}}'/><a class='add'>+</a>--></section></article>{{/items}}</div>{{/dishes}}</div>
 	</script>
 	<script id="sltTmpl" type="text/html">
 	<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>{{count}}</td><td>{{price}}/{{vipPrice}}</td></tr>{{/dishes}}</tbody></table><p>总价：{{total}}元</p>
 	</script>
+	<style id="initStyle"></style>
 </head>
 <body>
     <header>
         <h1>
         </h1>
     </header>
-    <section>
+    <section id="main">
     </section>
     <aside id="promotion">
     </aside>

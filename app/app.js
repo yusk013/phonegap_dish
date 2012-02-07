@@ -3,6 +3,8 @@ var pageSize = 3;
 var entryPath = '/mnt/sdcard/eMenu';
 var remoteUrl = 'http://218.206.201.27:8088/download/10001/';// 'http://35918.cn/dishes/demo/';
 var needUpdate = false;
+var pages = 0;
+var mainScroll;
 /*
 var localMenus = {
 	v : 0
@@ -188,14 +190,46 @@ var updateProfile = function() {
 };
 
 var initUI = function() {
+	var localURI = function(str){
+		return str.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath);
+	};
 	$("header>h1").text(localMenus.corp.name);
-	showCoverMsg("初始化成功, 载入菜品.");
 	$("nav").html(Mustache.to_html($("#cateTmpl").html(), localMenus));
-	var dishesUI = Mustache.to_html($("#dishTmpl").html(), {
-		dishes : localMenus.dishes
+	
+	var localDishes = localMenus.dishes;
+	pages = localDishes.length;
+	
+	showCoverMsg("初始化成功, 载入菜品.");
+	
+	var mainViewWrap = $("body>section");
+	
+	var mainViewWrapHeight = mainViewWrap.height();
+	$("#initStyle").html(".page{height:" + mainViewWrapHeight + "px;}.scroll{height:" + (mainViewWrapHeight * pages) + "px;}");
+	
+	var dishTmpl = localURI($("#dishTmpl").html());
+	var dishesUI = Mustache.to_html(dishTmpl, {
+		dishes : localDishes
 	});
-	$("section").html(
-			dishesUI.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath));
+	mainViewWrap.html(dishesUI);
+	
+	setTimeout(function () {
+		mainScroll = new iScroll('main', {
+			snap: 'div.page',
+			momentum: false,
+			hScrollbar: false,
+			vScrollbar: false });
+	}, 100);
+	
+	//bind promotions
+	var promo = localMenus.promotion;
+	var promotions = [];
+	$.each(promo, function(i, p){
+		var promoItem = localDishes[p[0] - 1].items[p[1] - 1];
+		promotions.push(promoItem);
+	});
+	var promoUI = Mustache.to_html("{{#dishes}}<b>{{name}}</b>{{/dishes}}", {dishes: promotions});
+	//console.log(promoUI);
+	$("#promotion").html(promoUI);
 	//bindDishes();
 	//bindEvent();
 	$("#cover").hide();

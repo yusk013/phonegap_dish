@@ -1,5 +1,5 @@
 ﻿var dishes = {
-	"v" : 20120130140608301,
+	"v" : 1328512139465,
 	"corp" : {
 		"name" : "忆江南"
 	},
@@ -24,7 +24,7 @@
 		"name" : "饮料",
 		"pageIndex" : 14
 	} ],
-	"promotion" : [ 23, 5, 25 ],
+	"promotion" : [ [ 7, 1 ], [ 1, 1 ], [ 7, 3 ] ],
 	"dishes" : [ {
 		"layout" : 1,
 		"items" : [ {
