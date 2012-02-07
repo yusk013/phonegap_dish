@@ -443,7 +443,7 @@ var initUI = function () {
     bindDishes();
     bindEvent();
     $("#cover").hide();
-}
+};
 
 var bindDishes = function () {
     var page = menus.pages[pageIndex - 1];

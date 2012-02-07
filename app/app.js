@@ -1,15 +1,13 @@
 ﻿var pageIndex = 1;
-var pageSize = 3;
 var entryPath = '/mnt/sdcard/eMenu';
 var remoteUrl = 'http://218.206.201.27:8088/download/10001/';// 'http://35918.cn/dishes/demo/';
 var needUpdate = false;
 var pages = 0;
 var mainScroll;
+var selectedDishes = "";
 /*
-var localMenus = {
-	v : 0
-};
-*/
+ * var localMenus = { v : 0 };
+ */
 var localMenus = dishes;
 
 var isLoading = true;
@@ -49,8 +47,6 @@ var onLoadStopped = function() {
 var onResetData = function() {
 	if (confirm('清除本地数据后，您会在下次启动电子菜单时从服务器获得最新的数据，是否继续？')) {
 		window.localStorage.removeItem('dishes');
-		// $('#cover').show();
-		// initProfile();
 		$('#mastermode').hide();
 	}
 };
@@ -132,13 +128,14 @@ var updateProfile = function() {
 				console.log("save local profile successful.");
 			};
 
-			//console.log('got data: ' + data);
+			// console.log('got data: ' + data);
 			eval("var remoteMenus = " + data);
 			if (remoteMenus.v != version) {
 				// compare image files
-				var i = 0, dishes = remoteMenus.dishes, f = dishes.length;
-				console.log(f + " image file(s) download needed, v = " + remoteMenus.v);
-				
+				var i = 0, dishes = remoteMenus.events, f = dishes.length;
+				console.log(f + " image file(s) download needed, v = "
+						+ remoteMenus.v);
+
 				var onImgDownloadComplate = function() {
 					showCoverMsg("下载完成，正在完成配置，请稍候。");
 					localMenus = remoteMenus;
@@ -149,9 +146,9 @@ var updateProfile = function() {
 					console.log('download image error (' + e.code + ').');
 					isDownloadEnded();
 				};
-				var isDownloadEnded = function(){
+				var isDownloadEnded = function() {
 					i++;
-					//console.log("prepare download " + i + " of " + f + ".");
+					// console.log("prepare download " + i + " of " + f + ".");
 					if (i >= f) {
 						onImgDownloadComplate();
 					} else {
@@ -161,19 +158,21 @@ var updateProfile = function() {
 				var imgDownload = function() {
 					var ft = new FileTransfer();
 					var d = dishes[i];
-					var fileName = d.img;
+					var fileName = d.url;
 					var dlPath = entryPath + "/" + fileName;
-					showCoverMsg("开始下载菜品照片，请稍候……\r\n(" + (i + 1) + "/" + f + ")");
-					//console.log("downloading crap to " + dlPath);
+					showCoverMsg("开始下载菜品照片，请稍候……\r\n(" + (i + 1) + "/" + f
+							+ ")");
+					// console.log("downloading crap to " + dlPath);
 					ft.download(remoteUrl + escape(fileName), dlPath, function(
 							e) {
 						$('#cover .previewImg').css("background-image",
 								'url(' + e.fullPath + ')');
-						//console.log("download \"" + dlPath + "\" successful.");
+						// console.log("download \"" + dlPath + "\"
+						// successful.");
 						isDownloadEnded();
 					}, onImgDownloadError);
 				};
-				
+
 				imgDownload();
 			} else {
 				console.log("no more new image need download. initUI now.");
@@ -190,49 +189,76 @@ var updateProfile = function() {
 };
 
 var initUI = function() {
-	var localURI = function(str){
+	var localURI = function(str) {
 		return str.replace(/\[\[imgFolder\]\]/g, "file://" + entryPath);
 	};
+	// {{#each_with_index records}}
+	// <li class="legend_item{{index}}"><span></span>{{Name}}</li>
+	// {{/each_with_index}}
+
+	Handlebars.registerHelper("each_with_index", function(array, fn) {
+		var buffer = "";
+		for ( var i = 0, j = array.length; i < j; i++) {
+			var item = array[i];
+			// stick an index property onto the item, starting with 1, may make
+			// configurable later
+			item.index = i + 1;
+			// show the inside of the block
+			buffer += fn(item);
+		}
+		// return the finished buffer
+		return buffer;
+	});
+
 	$("header>h1").text(localMenus.corp.name);
-	$("nav").html(Mustache.to_html($("#cateTmpl").html(), localMenus));
-	
+	var tmpl = Handlebars.compile($("#cateTmpl").html());
+	$("nav").html(tmpl(localMenus));
+
 	var localDishes = localMenus.dishes;
 	pages = localDishes.length;
-	
+
 	showCoverMsg("初始化成功, 载入菜品.");
-	
+
 	var mainViewWrap = $("body>section");
-	
+
 	var mainViewWrapHeight = mainViewWrap.height();
-	var initProperty = {wrapHeight: mainViewWrapHeight, scrollHeight: (mainViewWrapHeight * pages)};
-	$("#initStyle").html(Mustache.to_html($("#initStyleTmpl").html(),initProperty));
-	
-	var dishTmpl = localURI($("#dishTmpl").html());
-	var dishesUI = Mustache.to_html(dishTmpl, {
+	var initProperty = {
+		wrapHeight : mainViewWrapHeight,
+		scrollHeight : (mainViewWrapHeight * pages)
+	};
+	tmpl = Handlebars.compile($("#initStyleTmpl").html());
+	$("#initStyle").html(tmpl(initProperty));
+
+	tmpl = Handlebars.compile(localURI($("#dishTmpl").html()));
+	var dishesUI = tmpl({
 		dishes : localDishes
 	});
 	mainViewWrap.html(dishesUI);
-	
-	setTimeout(function () {
+
+	setTimeout(function() {
 		mainScroll = new iScroll('main', {
-			snap: 'div.page',
-			momentum: false,
-			hScrollbar: false,
-			vScrollbar: false });
+			snap : 'div.page',
+			momentum : false,
+			hScrollbar : false,
+			vScrollbar : false
+		});
 	}, 100);
-	
-	//bind promotions
+
+	// bind promotions
 	var promo = localMenus.promotion;
 	var promotions = [];
-	$.each(promo, function(i, p){
-		var promoItem = localDishes[p[0] - 1].items[p[1] - 1];
+	$.each(promo, function(i, p) {
+		var promoItem = $.extend(localDishes[p[0] - 1].items[p[1] - 1], {"p": p[0], "i": p[1]});
 		promotions.push(promoItem);
 	});
-	var promoUI = Mustache.to_html($("#promoTmpl").html(), {dishes: promotions});
-	//console.log(promoUI);
+	tmpl = Handlebars.compile(localURI($("#promoTmpl").html()));
+	var promoUI = tmpl({
+		dishes : promotions
+	});
+	// console.log(promoUI);
 	$("#promotion").html(promoUI);
-	//bindDishes();
-	//bindEvent();
+	// bindDishes();
+	bindEvent();
 	$("#cover").hide();
 	onLoadStopped();// isLoading = false;
 };
@@ -241,55 +267,61 @@ var showCoverMsg = function(msg) {
 	$("#cover a").text(msg);
 };
 
-var bindDishes = function() {
-	var page = localMenus.pages[pageIndex - 1];
-	if (!page)
-		return;
-	$("article.show section.dish").removeClass("cover");
-	$("section>article").removeClass();
-	$.each(page.dishes, function(i) {
-		$("section>article[data-id='" + page.dishes[i] + "']").addClass(
-				"l_" + page.layout + "_" + i + " show");
-	});
-	setTimeout(function(){$("article.show section.dish").addClass("cover");}, 200);
-	var cateid = 0;
-	$.each(localMenus.category, function(i, n) {
-		if (pageIndex >= n.pageIndex) {
-			cateid = n.id;
-		} else {
-			return false;
-		}
-	});
-	$("nav li").removeClass();
-	$("nav li>a[cid ='" + cateid + "']").parent().addClass('on');
-};
+/*
+ * var bindDishes = function() { var page = localMenus.pages[pageIndex - 1]; if
+ * (!page) return; $("article.show section.dish").removeClass("cover");
+ * $("section>article").removeClass(); $.each(page.dishes, function(i) {
+ * $("section>article[data-id='" + page.dishes[i] + "']").addClass( "l_" +
+ * page.layout + "_" + i + " show"); }); setTimeout(function() { $("article.show
+ * section.dish").addClass("cover"); }, 200); var cateid = 0;
+ * $.each(localMenus.category, function(i, n) { if (pageIndex >= n.pageIndex) {
+ * cateid = n.id; } else { return false; } }); $("nav li").removeClass(); $("nav
+ * li>a[cid ='" + cateid + "']").parent().addClass('on'); };
+ */
 
 var bindEvent = function() {
-	$("footer a:nth-child(1)").bind("click", function() {
-		if (pageIndex > 1)
-			pageIndex--;
-		bindDishes();
+	$("#promoBtn").click(function() {
+		$("#promotion a").each(function(){
+			thisPi = "[" + $(this).attr("data-pi") + "]";
+			if(selectedDishes.indexOf(thisPi) == -1){
+				$(this).removeClass("chk");
+			}else{
+				$(this).addClass("chk");
+			}
+		});
+		$("aside.front").removeClass();
+		$("#promotion").toggleClass("front");
 	});
-	$("footer a:nth-child(2)").bind("click", bindSelectedMenu);
-	$("footer a:nth-child(3)").bind("click", function() {
-		if (localMenus.pages.length > pageIndex)
-			pageIndex++;
-		bindDishes();
+	$("nav li a").bind("click", function() {
+		$("aside.front").removeClass();
+		var pi = parseInt(this.getAttribute("data-pi"));
+		mainScroll.scrollToPage(0, pi - 1, 500);
 	});
-	$("nav li a").bind("click", bindCategoryDishes);
-	;
+	$("#main section.slt a").click(function() {
+		var i = parseInt($(this).closest("article").attr("data-index"));
+		var p = parseInt($(this).closest("div.page").attr("data-page"));
+		var dishIndex = p + "/" + i;
+		if ($(this).hasClass("chk")) {
+			$(this).removeClass("chk");
+			selectedDishes = selectedDishes.replace("[" + dishIndex + "]", "");
+		} else {
+			selectedDishes += "[" + dishIndex + "]";
+			$(this).addClass("chk");
+		}
+		console.log("dishes: " + selectedDishes);
+	});
+	$("#promotion section.slt a").click(function(){
+		var piData = $(this).attr("data-pi");
+		var pi = piData.split("/");
+		$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
+		$(this).toggleClass("chk");
+	});
 
-	$("section.slt a").live('click', selectdDish);
+	// $("section.slt a").live('click', selectdDish);
 	// $("section.slt a.add").live('click', addDish);
 	// $("section.slt a.sub").live('click', subDish);
 
-	$("#selected a.close").click(menuClose);
-};
-
-var bindCategoryDishes = function() {
-	var pi = parseInt(this.getAttribute("data-pi"));
-	pageIndex = pi;
-	bindDishes();
+	// $("#selected a.close").click(menuClose);
 };
 
 var bindSelectedMenu = function() {
