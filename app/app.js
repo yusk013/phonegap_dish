@@ -114,7 +114,7 @@ var updateProfile = function() {
 	console.log("prepare to get profile from " + remoteUrl);
 	$.ajax({
 		type : 'GET',
-		url : remoteUrl + 'dishes.txt',
+		url : remoteUrl + 'dishes2.txt',
 		data : {
 			v : version
 		},
@@ -289,8 +289,26 @@ var bindEvent = function() {
 				$(this).addClass("chk");
 			}
 		});
-		$("aside.front").removeClass();
+		$("#selected").removeClass();
 		$("#promotion").toggleClass("front");
+	});
+	$("#selectBtn").click(function(){
+		var listStrLength = selectedDishes.length;
+		var currentDishes = [];
+		if(listStrLength > 3){
+			var dishList = selectedDishes.substring(1, listStrLength -1).split("][");
+			$.each(dishList, function(i, pi){
+				var dishPos = pi.split("/");
+				var dish = $.extend(localMenus.dishes[dishPos[0] - 1].items[dishPos[1] - 1], {"p": dishPos[0], "i": dishPos[1]});
+				currentDishes.push(dish);
+			});
+			var tmpl = Handlebars.compile($("#sltTmpl").html());
+			$("#selected").html(tmpl({dishes: currentDishes}));
+		}else{
+			
+		}
+		$("#promotion").removeClass();
+		$("#selected").toggleClass("front");
 	});
 	$("nav li a").bind("click", function() {
 		$("aside.front").removeClass();
@@ -316,7 +334,6 @@ var bindEvent = function() {
 		$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
 		$(this).toggleClass("chk");
 	});
-
 	// $("section.slt a").live('click', selectdDish);
 	// $("section.slt a.add").live('click', addDish);
 	// $("section.slt a.sub").live('click', subDish);
