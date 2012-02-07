@@ -5,10 +5,7 @@ var needUpdate = false;
 var pages = 0;
 var mainScroll;
 var selectedDishes = "";
-/*
- * var localMenus = { v : 0 };
- */
-var localMenus = dishes;
+var localMenus = { v : 0 };
 
 var isLoading = true;
 
@@ -224,7 +221,7 @@ var initUI = function() {
 	var mainViewWrapHeight = mainViewWrap.height();
 	var initProperty = {
 		wrapHeight : mainViewWrapHeight,
-		scrollHeight : (mainViewWrapHeight * pages)
+		scrollHeight : mainViewWrapHeight * pages
 	};
 	tmpl = Handlebars.compile($("#initStyleTmpl").html());
 	$("#initStyle").html(tmpl(initProperty));
@@ -233,6 +230,7 @@ var initUI = function() {
 	var dishesUI = tmpl({
 		dishes : localDishes
 	});
+	//console.log(dishesUI);
 	mainViewWrap.html(dishesUI);
 
 	setTimeout(function() {
@@ -327,6 +325,7 @@ var bindEvent = function() {
 			$(this).addClass("chk");
 		}
 		console.log("dishes: " + selectedDishes);
+		$("#selectBtn").html(selectedDishes.split("/").length - 1);
 	});
 	$("#promotion section.slt a").click(function(){
 		var piData = $(this).attr("data-pi");
@@ -334,13 +333,8 @@ var bindEvent = function() {
 		$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
 		$(this).toggleClass("chk");
 	});
-	// $("section.slt a").live('click', selectdDish);
-	// $("section.slt a.add").live('click', addDish);
-	// $("section.slt a.sub").live('click', subDish);
-
-	// $("#selected a.close").click(menuClose);
 };
-
+/*
 var bindSelectedMenu = function() {
 	var menuList = [];
 	var total = 0;
@@ -398,5 +392,5 @@ var selectdDish = function() {
 	var sltDishTxt = "已点菜品(" + sltCount + ")";
 	$("footer a").eq(1).text(sltDishTxt);
 };
-
+*/
 document.addEventListener("deviceready", onDeviceReady, false);
