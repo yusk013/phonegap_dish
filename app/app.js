@@ -4,7 +4,7 @@ var needUpdate = false;
 var mainScroll;
 var selectedDishes = "";
 var localVersion = 0;
-var localMenus = { v : localVersion };
+var localMenus = dishes;//{ v : localVersion };
 var corpName = "Womobo Inc.";
 var miniVersion = 1328667835039;
 	
@@ -297,6 +297,14 @@ var bindEvent = function() {
 		}
 		$("#promotion").removeClass();
 		$("#selected").toggleClass("front");
+		
+		$("#selected table a").click(function(){
+			//alert("真不要了");
+			var piData = $(this).attr("data-pi");
+			var pi = piData.split("/");
+			$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
+			$(this).closest("tr").hide();
+		});
 	});
 	$("nav li a").bind("click", function() {
 		$("header h1").html(corpName);

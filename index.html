@@ -19,7 +19,7 @@
 	<div id="#mainView" class="scroll">{{#each_with_index dishes}}<div data-layout='{{layout}}' data-page='{{index}}' class="page l{{layout}}">{{#each_with_index items}}<article data-id='{{id}}' data-index='{{index}}' class='i{{index}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a></a></section></article>{{/each_with_index}}</div>{{/each_with_index}}</div>
 	</script>
 	<script id="sltTmpl" type="text/html">
-	<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#each dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>1</td><td>{{price}}/{{vipPrice}}</td></tr>{{/each}}</tbody></table><!--<p>总价：{{total}}元</p>-->
+	<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th><th></th></tr></thead><tbody>{{#each dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>1</td><td>{{price}}/{{vipPrice}}</td><td><a class="chk" data-pi='{{p}}/{{i}}'></a></td></tr>{{/each}}</tbody></table><!--<p>总价：{{total}}元</p>-->
 	</script>
 	<script id="promoTmpl" type="text/html">
 	<div id="promoPage">{{#each dishes}}<article data-id='{{id}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a data-pi='{{p}}/{{i}}'></a></section></article>{{/each}}</div>
@@ -53,7 +53,7 @@
 	</ul>
 	</div>
     <script type="text/javascript" charset="utf-8">
-        //initUI();
+        initUI();
     </script>
 </body>
 </html>

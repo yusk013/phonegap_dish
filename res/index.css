@@ -93,7 +93,7 @@ article>section.price>ul li {
 	list-style: none
 }
 
-section.slt a {
+section.slt a, #selected table a {
 	cursor: pointer;
 	background: -webkit-gradient(linear, left top, left bottom, from(#a3d119),
 		to(#739d00) );
@@ -104,20 +104,20 @@ section.slt a {
 	margin: 0 auto;
 	height: 1.5em;
 	line-height: 1.5em;
-	font-weight: bold;
+	text-align:center;
 }
 
-section.slt a::before {
+section.slt a::before , #selected table a::before{
 	content: "来一个";
 }
 
-section.slt a.chk {
+section.slt a.chk, #selected table a.chk {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffa300),
 		to(#ffce00) );
 	border-color: #b35800;
 }
 
-section.slt a.chk::before {
+section.slt a.chk::before, #selected table a.chk::before {
 	content: '不要了';
 }
 /**end dish item**/
@@ -185,6 +185,7 @@ aside.front {
 		color-stop(100%, #fff701) );
 	background: linear-gradient(top, #fffb8f 0%, #fff701 100%);
 	line-height: 3em;
+	border-radius:3px;
 }
 
 #promoBtn:before,#promoBtn:after {
