@@ -9,15 +9,14 @@
     <script type="text/javascript" src="lib/handlebars-1.0.0.beta.6.js"></script>
     <script type="text/javascript" src="lib/JSON2.min.js"></script>
     <script type="text/javascript" src="lib/iscroll.js"></script>
-    <!-- 
     <script type="text/javascript" src="app/dishes2.js"></script>
-     -->
-    <script type="text/javascript" src="app/app.js"></script>
+
+   <script type="text/javascript" src="app/app.js"></script>
 	<script id="cateTmpl" type="text/html">
 	<ul>{{#each_with_index category}}<li><a data-index='{{index}}' data-pi='{{pageIndex}}'>{{name}}</a></li>{{/each_with_index}}</ul>
 	</script>
 	<script id="dishTmpl" type="text/html">
-	<div id="#mainView" class="scroll">{{#each_with_index dishes}}<div data-layout='{{layout}}' data-page='{{index}}' class="page">{{#each_with_index items}}<article data-id='{{id}}' data-index='{{index}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a></a></section></article>{{/each_with_index}}</div>{{/each_with_index}}</div>
+	<div id="#mainView" class="scroll">{{#each_with_index dishes}}<div data-layout='{{layout}}' data-page='{{index}}' class="page l{{layout}}">{{#each_with_index items}}<article data-id='{{id}}' data-index='{{index}}' class='i{{index}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='slt'><a></a></section></article>{{/each_with_index}}</div>{{/each_with_index}}</div>
 	</script>
 	<script id="sltTmpl" type="text/html">
 	<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th></tr></thead><tbody>{{#each dishes}}<tr><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td>1</td><td>{{price}}/{{vipPrice}}</td></tr>{{/each}}</tbody></table><!--<p>总价：{{total}}元</p>-->
