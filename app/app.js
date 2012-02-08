@@ -4,7 +4,7 @@ var needUpdate = false;
 var mainScroll;
 var selectedDishes = "";
 var localVersion = 0;
-var localMenus = dishes;//{ v : localVersion };
+var localMenus = { v : localVersion };
 var corpName = "Womobo Inc.";
 var miniVersion = 1328667835039;
 	
