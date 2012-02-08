@@ -293,7 +293,7 @@ var bindEvent = function() {
 			var tmpl = Handlebars.compile($("#sltTmpl").html());
 			$("#selected").html(tmpl({dishes: currentDishes}));
 		}else{
-			
+			$("#selected").html("您还未点菜，选择菜品类别开始点菜，或者看看我们的“今日特选”。");
 		}
 		$("#promotion").removeClass();
 		$("#selected").toggleClass("front");
