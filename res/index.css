@@ -177,6 +177,7 @@ body>aside.front {
 	-ms-transform: rotate(30deg);
 	-o-transform: rotate(30deg);
 	transform: rotate(30deg);
+	display:block;
 }
 
 #promoBtn,#promoBtn::before,#promoBtn::after {
@@ -236,6 +237,7 @@ body>aside.front {
 	background: url(selected.png) 50% 50% no-repeat;
 	background-size: 100%;
 	z-index: 20;
+	display:block;
 }
 
 #selectBtn span {

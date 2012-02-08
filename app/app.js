@@ -4,30 +4,39 @@ var needUpdate = false;
 var mainScroll;
 var selectedDishes = "";
 var localVersion = 0;
-var localMenus = dishes;//{ v : localVersion };
+var localMenus = { v : localVersion };
 var corpName = "Womobo Inc.";
 var miniVersion = 1328667835039;
 var viewIndex = 0;
-	
+
 var isLoading = true;
 
 var onDeviceReady = function() {
 	var onBackKeyDown = function() {
 		if (isLoading)
 			return;
-		document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键
-		// 3秒后重新注册
-		var intervalID = window.setInterval(function() {
-			window.clearInterval(intervalID);
-			document.addEventListener("backbutton", onBackKeyDown, false); // 返回键
-		}, 3000);
+		switch (viewIndex) {
+		case 1:
+			$("#promoBtn").trigger("tap");
+			break;
+		case 2:
+			$("#selectBtn").trigger("tap");
+			break;
+		default:
+			document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键
+			// 3秒后重新注册
+			var intervalID = window.setInterval(function() {
+				window.clearInterval(intervalID);
+				document.addEventListener("backbutton", onBackKeyDown, false); // 返回键
+			}, 3000);
+		}
 	};
 
 	var onMenuKeyDown = function() {
 		if (isLoading)
 			return;
-		//bindSelectedMenu();
-		$("#selectBtn").trigger("click");
+		// bindSelectedMenu();
+		$("#selectBtn").trigger("tap");
 	};
 
 	var onSearchKeyDown = function() {
@@ -87,7 +96,7 @@ var initProfile = function() {
 					 */
 					var lsMenus = window.localStorage.getItem("dishes");
 					eval("localMenus = " + lsMenus);
-					
+
 					try {
 						localVersion = localMenus.v;
 					} catch (e) {
@@ -99,9 +108,7 @@ var initProfile = function() {
 						showCoverMsg("必须联网获取最新数据方能使用。<br>准备通过网络初始化，请稍候……");
 						updateProfile();
 					} else {
-						console.log("load local profile success.");// data is "
-						// +
-						// JSON.stringify(localMenus));
+						console.log("load local profile success.");
 						initUI();
 					}
 				}, onLocalProfileError);
@@ -231,7 +238,7 @@ var initUI = function() {
 	var dishesUI = tmpl({
 		dishes : localDishes
 	});
-	//console.log(dishesUI);
+	// console.log(dishesUI);
 	mainViewWrap.html(dishesUI);
 
 	setTimeout(function() {
@@ -247,7 +254,10 @@ var initUI = function() {
 	var promo = localMenus.promotion;
 	var promotions = [];
 	$.each(promo, function(i, p) {
-		var promoItem = $.extend(localDishes[p[0] - 1].items[p[1] - 1], {"p": p[0], "i": p[1]});
+		var promoItem = $.extend(localDishes[p[0] - 1].items[p[1] - 1], {
+			"p" : p[0],
+			"i" : p[1]
+		});
 		promotions.push(promoItem);
 	});
 	tmpl = Handlebars.compile(localURI($("#promoTmpl").html()));
@@ -266,9 +276,9 @@ var showCoverMsg = function(msg) {
 	$("#cover a").html(msg);
 };
 
-var setTitle = function(){
+var setTitle = function() {
 	var title = corpName;
-	switch(viewIndex){
+	switch (viewIndex) {
 	case 1:
 		title = "今日特选";
 		break;
@@ -282,53 +292,59 @@ var setTitle = function(){
 };
 
 var bindEvent = function() {
-	$("#promoBtn").click(function() {
-		$("#promotion a").each(function(){
+	$("#promoBtn").tap(function() {
+		$("#promotion a").each(function() {
 			thisPi = "[" + $(this).attr("data-pi") + "]";
-			if(selectedDishes.indexOf(thisPi) == -1){
+			if (selectedDishes.indexOf(thisPi) == -1) {
 				$(this).removeClass("chk");
-			}else{
+			} else {
 				$(this).addClass("chk");
 			}
 		});
 		$("#selected").removeClass();
+		console.log("show promotion");
 		$("#promotion").toggleClass("front");
 		viewIndex = $("#promotion").hasClass("front") ? 1 : 0;
 		setTitle();
 	});
-	$("#selectBtn").click(function(){
+
+	$("#selectBtn").tap(function() {
 		var noOrderTips = "您还未点菜，选择菜品类别开始点菜，或者看看我们的“今日特选”。";
 		var listStrLength = selectedDishes.length;
 		var currentDishes = [];
-		if(listStrLength > 3){
-			var dishList = selectedDishes.substring(1, listStrLength -1).split("][");
-			$.each(dishList, function(i, pi){
+		if (listStrLength > 3) {
+			var dishList = selectedDishes.substring(1, listStrLength - 1).split("][");
+			$.each(dishList, function(i, pi) {
 				var dishPos = pi.split("/");
-				var dish = $.extend(localMenus.dishes[dishPos[0] - 1].items[dishPos[1] - 1], {"p": dishPos[0], "i": dishPos[1]});
+				var dish = $.extend(localMenus.dishes[dishPos[0] - 1].items[dishPos[1] - 1],{"p" : dishPos[0],"i" : dishPos[1]});
 				currentDishes.push(dish);
 			});
 			var tmpl = Handlebars.compile($("#sltTmpl").html());
-			$("#selected").html(tmpl({dishes: currentDishes}));
-			
-			$("#selected table a").click(function(){
-				var piData = $(this).attr("data-pi");
-				var pi = piData.split("/");
-				$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
-				$(this).closest("tr").hide();
-				if(selectedDishes.length == 0){
-					$("#selected").html(noOrderTips);
-				}
-			});
-		}else{
-			$("#selected").html(noOrderTips);
+			$("#selected").html(tmpl({
+				dishes : currentDishes
+			}));
+
+			$("#selected table a").click(function() {
+					var piData = $(this).attr("data-pi");
+					var pi = piData.split("/");
+					$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1]+ "'] a").trigger('click');
+					$(this).closest("tr").hide();
+					if (selectedDishes.length == 0) {
+						$("#selected").text(noOrderTips);
+					}
+				});
+		} else {
+			$("#selected").text(noOrderTips);
 		}
 		
+		console.log("show order");
 		$("#promotion").removeClass();
 		$("#selected").toggleClass("front");
-		
+
 		viewIndex = $("#selected").hasClass("front") ? 2 : 0;
 		setTitle();
 	});
+
 	$("nav li a").bind("click", function() {
 		$("aside.front").removeClass();
 		var pi = parseInt(this.getAttribute("data-pi"));
@@ -336,6 +352,7 @@ var bindEvent = function() {
 		viewIndex = 0;
 		setTitle();
 	});
+
 	$("#main section.slt a").click(function() {
 		var i = parseInt($(this).closest("article").attr("data-index"));
 		var p = parseInt($(this).closest("div.page").attr("data-page"));
@@ -350,12 +367,16 @@ var bindEvent = function() {
 		console.log("dishes: " + selectedDishes);
 		$("#selectBtn span").html(selectedDishes.split("/").length - 1);
 	});
-	$("#promotion section.slt a").click(function(){
-		var piData = $(this).attr("data-pi");
-		var pi = piData.split("/");
-		$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
-		$(this).toggleClass("chk");
-	});
+	$("#promotion section.slt a").click(
+			function() {
+				var piData = $(this).attr("data-pi");
+				var pi = piData.split("/");
+				$(
+						"#main div.page[data-page='" + pi[0]
+								+ "'] article[data-index='" + pi[1] + "'] a")
+						.trigger('click');
+				$(this).toggleClass("chk");
+			});
 };
 
 document.addEventListener("deviceready", onDeviceReady, false);
