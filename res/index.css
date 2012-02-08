@@ -281,95 +281,23 @@ body>aside.front {
 	border: 1px solid #380000;
 	border-radius: 5px 5px 0 0;
 }
-
-#selected h2 {
-	font-size: 1.2em;
-	padding: 0.5em;
-	font-weight: bold;
-	text-align: center;
-	border-radius: 5px 5px 0 0;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8c3a6),
-		color-stop(100%, #dba080) )
-}
-
-#selected a.close {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fce302),
-		color-stop(100%, #ffaf00) );
-	border: 1px solid #e19c00;
-	color: #650b0b;
-	font-size: 1.2em;
-	padding: 0.5em 2em;
-	border-radius: 2px;
-	margin: 2px auto;
-	text-align: center
-}
-
-#selected a.close:active {
-	border-color: #b16801;
-	background: linear-gradient(top, #f0b900 0%, #bf6a00 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0b900),
-		color-stop(100%, #bf6a00) );
-}
-
-#selected a.close:hover {
-	border-color: #b16801;
-	background: linear-gradient(top, #f0b900 0%, #bf6a00 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0b900),
-		color-stop(100%, #bf6a00) );
-}
-
-#selected div.c {
-	position: absolute;
-	height: 1.5em;
-	left: 0;
-	right: 0;
-	bottom: 0.2em;
-	text-align: center;
-}
-
-#selected thead {
-	color: #380000
-}
-
-#selected tbody {
-	color: #843e1a;
-	font-weight: bold;
-}
-
-#selected tr {
-	border-bottom: 1px solid black
-}
-
-#selected div.t {
-	margin: 0.5em 1em;
-	position: absolute;
-	top: 2em;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	overflow: auto;
-}
-
-#selected div.t table {
+#selected table {
+	font-size:0.8em;
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: 100%;
 }
-
-#selected div.t th,#selected div.t td {
+#selected thead {
+	color: #380000
+}
+#selected tbody {
+	color: #843e1a;
+}
+#selected th,#selected td {
 	text-align: center;
 	line-height: 2em;
 	padding: 0;
 	border-bottom: 1px solid #DDA284;
-}
-
-#selected p {
-	margin: 0.5em 2em;
-	height: 1.5em;
-	line-height: 1.5em;
-	font-weight: bold;
-	color: #471110;
-	text-align: right;
 }
 /**end selection**/
 /**start cover**/

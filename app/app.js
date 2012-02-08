@@ -4,9 +4,10 @@ var needUpdate = false;
 var mainScroll;
 var selectedDishes = "";
 var localVersion = 0;
-var localMenus = { v : localVersion };
+var localMenus = dishes;//{ v : localVersion };
 var corpName = "Womobo Inc.";
 var miniVersion = 1328667835039;
+var viewIndex = 0;
 	
 var isLoading = true;
 
@@ -207,7 +208,7 @@ var initUI = function() {
 		return buffer;
 	});
 	corpName = localMenus.corp.name;
-	$("header>h1").text(corpName);
+	setTitle();
 	var tmpl = Handlebars.compile($("#cateTmpl").html());
 	$("nav").html(tmpl(localMenus));
 
@@ -265,9 +266,23 @@ var showCoverMsg = function(msg) {
 	$("#cover a").html(msg);
 };
 
+var setTitle = function(){
+	var title = corpName;
+	switch(viewIndex){
+	case 1:
+		title = "今日特选";
+		break;
+	case 2:
+		title = "已点菜品";
+		break;
+	default:
+		title = corpName;
+	}
+	$("header>h1").text(title);
+};
+
 var bindEvent = function() {
 	$("#promoBtn").click(function() {
-		$("header h1").html("今日特选");
 		$("#promotion a").each(function(){
 			thisPi = "[" + $(this).attr("data-pi") + "]";
 			if(selectedDishes.indexOf(thisPi) == -1){
@@ -278,9 +293,11 @@ var bindEvent = function() {
 		});
 		$("#selected").removeClass();
 		$("#promotion").toggleClass("front");
+		viewIndex = $("#promotion").hasClass("front") ? 1 : 0;
+		setTitle();
 	});
 	$("#selectBtn").click(function(){
-		$("header h1").html("已点菜品");
+		var noOrderTips = "您还未点菜，选择菜品类别开始点菜，或者看看我们的“今日特选”。";
 		var listStrLength = selectedDishes.length;
 		var currentDishes = [];
 		if(listStrLength > 3){
@@ -292,25 +309,32 @@ var bindEvent = function() {
 			});
 			var tmpl = Handlebars.compile($("#sltTmpl").html());
 			$("#selected").html(tmpl({dishes: currentDishes}));
+			
+			$("#selected table a").click(function(){
+				var piData = $(this).attr("data-pi");
+				var pi = piData.split("/");
+				$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
+				$(this).closest("tr").hide();
+				if(selectedDishes.length == 0){
+					$("#selected").html(noOrderTips);
+				}
+			});
 		}else{
-			$("#selected").html("您还未点菜，选择菜品类别开始点菜，或者看看我们的“今日特选”。");
+			$("#selected").html(noOrderTips);
 		}
+		
 		$("#promotion").removeClass();
 		$("#selected").toggleClass("front");
 		
-		$("#selected table a").click(function(){
-			//alert("真不要了");
-			var piData = $(this).attr("data-pi");
-			var pi = piData.split("/");
-			$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
-			$(this).closest("tr").hide();
-		});
+		viewIndex = $("#selected").hasClass("front") ? 2 : 0;
+		setTitle();
 	});
 	$("nav li a").bind("click", function() {
-		$("header h1").html(corpName);
 		$("aside.front").removeClass();
 		var pi = parseInt(this.getAttribute("data-pi"));
 		mainScroll.scrollToPage(0, pi - 1, 500);
+		viewIndex = 0;
+		setTitle();
 	});
 	$("#main section.slt a").click(function() {
 		var i = parseInt($(this).closest("article").attr("data-index"));
