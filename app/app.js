@@ -3,9 +3,11 @@ var remoteUrl = 'http://218.206.201.27:8088/download/10001/';// 'http://35918.cn
 var needUpdate = false;
 var mainScroll;
 var selectedDishes = "";
-var localMenus = { v : 0 };
+var localVersion = 0;
+var localMenus = { v : localVersion };
 var corpName = "Womobo Inc.";
-
+var miniVersion = 1328667835039;
+	
 var isLoading = true;
 
 var onDeviceReady = function() {
@@ -84,10 +86,16 @@ var initProfile = function() {
 					 */
 					var lsMenus = window.localStorage.getItem("dishes");
 					eval("localMenus = " + lsMenus);
-					// console.log("get local profile. data is " +
-					// localMenus.v);
-					if ((!localMenus) || (needUpdate)) {
-						showCoverMsg("初次使用？\r\n准备通过网络初始化，请稍候。");
+					
+					try {
+						localVersion = localMenus.v;
+					} catch (e) {
+						localVersion = 0;
+						console.log("get local profile version error(" + e + ").");
+					}
+
+					if ((localVersion < miniVersion) || (!localMenus) || (needUpdate)) {
+						showCoverMsg("必须联网获取最新数据方能使用。<br>准备通过网络初始化，请稍候……");
 						updateProfile();
 					} else {
 						console.log("load local profile success.");// data is "
@@ -100,19 +108,12 @@ var initProfile = function() {
 };
 
 var updateProfile = function() {
-	var version;
-	try {
-		version = localMenus.v;
-	} catch (e) {
-		version = 0;
-		console.log("get local profile version error(" + e + ").");
-	}
 	console.log("prepare to get profile from " + remoteUrl);
 	$.ajax({
 		type : 'GET',
 		url : remoteUrl + 'dishes2.txt',
 		data : {
-			v : version
+			v : localVersion
 		},
 		dataType : 'text',
 		async : true,
@@ -126,7 +127,7 @@ var updateProfile = function() {
 
 			// console.log('got data: ' + data);
 			eval("var remoteMenus = " + data);
-			if (remoteMenus.v != version) {
+			if (remoteMenus.v != localVersion) {
 				// compare image files
 				var i = 0, dishes = remoteMenus.events, f = dishes.length;
 				console.log(f + " image file(s) download needed, v = "
@@ -156,7 +157,7 @@ var updateProfile = function() {
 					var d = dishes[i];
 					var fileName = d.url;
 					var dlPath = entryPath + "/" + fileName;
-					showCoverMsg("开始下载菜品照片，请稍候……\r\n(" + (i + 1) + "/" + f
+					showCoverMsg("开始下载菜品照片，请稍候……<br>(" + (i + 1) + "/" + f
 							+ ")");
 					// console.log("downloading crap to " + dlPath);
 					ft.download(remoteUrl + escape(fileName), dlPath, function(
@@ -261,7 +262,7 @@ var initUI = function() {
 };
 
 var showCoverMsg = function(msg) {
-	$("#cover a").text(msg);
+	$("#cover a").html(msg);
 };
 
 var bindEvent = function() {
@@ -296,6 +297,14 @@ var bindEvent = function() {
 		}
 		$("#promotion").removeClass();
 		$("#selected").toggleClass("front");
+		
+		$("#selected table a").click(function(){
+			//alert("真不要了");
+			var piData = $(this).attr("data-pi");
+			var pi = piData.split("/");
+			$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1] + "'] a").trigger('click');
+			$(this).closest("tr").hide();
+		});
 	});
 	$("nav li a").bind("click", function() {
 		$("header h1").html(corpName);

@@ -1,5 +1,5 @@
 ﻿var dishes = {
-	"v" : 1328512139465,
+	"v" : 1328667835039,
 	"corp" : {
 		"name" : "忆江南"
 	},
@@ -26,7 +26,7 @@
 	} ],
 	"promotion" : [ [ 7, 1 ], [ 1, 1 ], [ 7, 3 ] ],
 	"dishes" : [ {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 5,
 			"name" : "卤水拼盘",
@@ -50,7 +50,7 @@
 			"img" : "cpss.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 11,
 			"name" : "风味泡菜",
@@ -74,7 +74,7 @@
 			"img" : "hdfg.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 14,
 			"name" : "金丝银缕",
@@ -98,7 +98,7 @@
 			"img" : "kgs.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 17,
 			"name" : "南瓜藤",
@@ -122,7 +122,7 @@
 			"img" : "xhg.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 1,
 			"name" : "鱼香肉丝",
@@ -146,7 +146,7 @@
 			"img" : "bhxr.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 21,
 		"items" : [ {
 			"id" : 4,
 			"name" : "四喜丸子",
@@ -154,14 +154,7 @@
 			"price" : 36,
 			"vipPrice" : 32,
 			"img" : "sxwz.jpg"
-		}, {
-			"id" : 5,
-			"name" : "卤水拼盘",
-			"des" : "精品凉菜",
-			"price" : 35,
-			"vipPrice" : 32,
-			"img" : "lspp.jpg"
-		}, {
+		},{
 			"id" : 20,
 			"name" : "叉烧雪鱼炒甜豆",
 			"des" : "叉烧雪鱼炒甜豆",
@@ -170,7 +163,7 @@
 			"img" : "csxyctd.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 21,
 			"name" : "铁板烧茄子",
@@ -194,7 +187,7 @@
 			"img" : "xmdmx.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 24,
 			"name" : "香辣虾",
@@ -218,7 +211,7 @@
 			"img" : "cljpg.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 27,
 			"name" : "虫草花白果煮胜瓜",
@@ -242,7 +235,7 @@
 			"img" : "shlx.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 30,
 			"name" : "番茄炒蛋",
@@ -266,7 +259,7 @@
 			"img" : "csr.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 31,
 		"items" : [ {
 			"id" : 33,
 			"name" : "白灼菜心",
@@ -290,7 +283,7 @@
 			"img" : "cchcpx.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 52,
 		"items" : [ {
 			"id" : 36,
 			"name" : "芝麻球",
@@ -328,7 +321,7 @@
 			"img" : "qcb.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 21,
 		"items" : [ {
 			"id" : 7,
 			"name" : "五粮液国宴酒",
@@ -345,7 +338,7 @@
 			"img" : "bjs2.jpg"
 		} ]
 	}, {
-		"layout" : 1,
+		"layout" : 42,
 		"items" : [ {
 			"id" : 40,
 			"name" : "芒果汁",
