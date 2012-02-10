@@ -247,8 +247,8 @@ body>aside.front {
 	position: fixed;
 	width: 2em;
 	height: 2em;
-	right: 0;
-	bottom: 0;
+	left: 1em;
+	top: 0;
 	background: url(selected.png) 50% 50% no-repeat;
 	background-size: 100%;
 	z-index: 20;
@@ -257,8 +257,8 @@ body>aside.front {
 
 #selectBtn span {
 	position: absolute;
-	top: -1em;
-	right: 0;
+	top: 0em;
+	right: -1em;
 	height: 1em;
 	line-height: 1em;
 	font-size: 0.6em;
