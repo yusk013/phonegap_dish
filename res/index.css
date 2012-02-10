@@ -40,14 +40,15 @@ body>section {
 	overflow: hidden;
 	z-index: 3;
 }
-
+div.page{
+	background-color: #622F14;;
+}
 /**start dish item**/
 article {
 	position: relative;
 	width: 100%;
 	height: 33%;
 	display: block;
-	background-color: #380000;
 }
 article>header {
 	position: relative;
@@ -67,20 +68,22 @@ article>section.dish {
 
 article>section.des {
 	position: absolute;
-	top: 0;
+	font-size:0.8em;
+	top: 3.75em;
 	left: 60%;
-	bottom: 2em;
+	bottom: 0;
 	right: 0;
 	padding: 0 0.5em;
 	overflow: auto;
 	z-index: 6;
+	border-left:1px solid #380000;
 }
 
 article>section.slt {
 	position: absolute;
 	left: 60%;
 	height: 3em;
-	bottom: 0;
+	top: 0;
 	text-align: center;
 	right: 0;
 	z-index: 8;
@@ -100,10 +103,10 @@ section.slt a, #selected table a {
 	background: -webkit-gradient(linear, left top, left bottom, from(#a3d119),
 		to(#739d00) );
 	display: block;
-	width: 6em;
+	width: 5em;
 	border: 1px solid #577604;
 	border-radius: 3px;
-	margin: 0 auto;
+	margin: 0.8em 0.8em auto auto;
 	height: 1.5em;
 	line-height: 1.5em;
 	text-align:center;
@@ -126,7 +129,7 @@ section.slt a.chk::before, #selected table a.chk::before {
 /**start nav bar**/
 body>nav {
 	position: absolute;
-	top: 4em;
+	top: 2.5em;
 	width: 2em;
 	right: 0;
 	bottom: 0;
@@ -168,8 +171,8 @@ body>aside.front {
 
 #promoBtn {
 	position: fixed;
-	top: 1.2em;
-	right: 1.2em;
+	top: 0.4em;
+	right: 0.4em;
 	text-align: center;
 	z-index: 15;
 	-webkit-transform: rotate(30deg);
@@ -181,13 +184,13 @@ body>aside.front {
 }
 
 #promoBtn,#promoBtn::before,#promoBtn::after {
-	height: 3em;
-	width: 3em;
+	height: 2em;
+	width: 2em;
 	background: orange;
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fffb8f),
 		color-stop(100%, #fff701) );
 	background: linear-gradient(top, #fffb8f 0%, #fff701 100%);
-	line-height: 3em;
+	line-height: 2em;
 	border-radius:3px;
 }
 
@@ -430,8 +433,8 @@ article>header {
 }
 
 article>section.des {
-	font-size: 0.8em;
-	background-color: #622f14;
+	/*font-size: 0.8em;*/
+	/*background-color: #622f14;*/
 	color: white
 }
 
@@ -465,10 +468,6 @@ section.price>ul li:first-child {
 section.price>ul li:last-child {
 	font-size: 1.2em;
 	font-weight: bold
-}
-
-section.slt {
-	background-color: #622f14
 }
 
 body>nav li {
@@ -511,6 +510,9 @@ div.l21>article{
 }
 div.l51>article{
 	height:20%;
+}
+div.l31 article.i3{
+	height:34%;
 }
 div.l52{
 	position:relative;
@@ -563,6 +565,15 @@ div.l42>article>section.dish, div.l52>article.i2>section.dish, div.l52>article.i
 div.l42>article>section.des, div.l52>article.i2>section.des, div.l52>article.i3>section.des, div.l52>article.i4>section.des, div.l52>article.i5>section.des{
 	left:0;
 	top:60%;
+}
+@media ( min-width : 900px){
+	div.l52>article.i2>section.des, div.l52>article.i3>section.des, div.l52>article.i4>section.des, div.l52>article.i5>section.des{
+		display:none;
+	}
+	div.l52>article.i2>section.dish, div.l52>article.i3>section.dish, div.l52>article.i4>section.dish, div.l52>article.i5>section.dish{
+		right:0;
+		bottom:0;
+	}
 }
 div.l42>article>section.slt, div.l52>article.i2>section.slt, div.l52>article.i3>section.slt, div.l52>article.i4>section.slt, div.l52>article.i5>section.slt{
 	left:0;
