@@ -308,16 +308,24 @@ var bindEvent = function() {
 		setTitle();
 	});
 
-	$("#selectBtn").tap(function() {
+	$("#selectBtn").click(function() {
 		var noOrderTips = "您还未点菜，选择菜品类别开始点菜，或者看看我们的“今日特选”。";
 		var listStrLength = selectedDishes.length;
 		var currentDishes = [];
 		if (listStrLength > 3) {
-			var dishList = selectedDishes.substring(1, listStrLength - 1).split("][");
+			var dishList = selectedDishes.substring(0, listStrLength - 1).split(",");
 			$.each(dishList, function(i, pi) {
 				var dishPos = pi.split("/");
-				var dish = $.extend(localMenus.dishes[dishPos[0] - 1].items[dishPos[1] - 1],{"p" : dishPos[0],"i" : dishPos[1]});
-				currentDishes.push(dish);
+				if(dishPos.length > 0){
+					var p = dishPos[0];
+					var i = dishPos[1];
+					var d = localMenus.dishes[dishPos[0] - 1].items[dishPos[1] - 1];
+					var t = dishPos[2];
+					var tp = d.price * t;
+					var tvp = d.vipPrice * t;
+					var dish = $.extend(d,{"p" : p,"i" : i, "t" : t, "tp": tp, "tvp": tvp});
+					currentDishes.push(dish);
+				}
 			});
 			var tmpl = Handlebars.compile($("#sltTmpl").html());
 			$("#selected").html(tmpl({
@@ -367,6 +375,22 @@ var bindEvent = function() {
 		console.log("dishes: " + selectedDishes);
 		$("#selectBtn span").html(selectedDishes.split("/").length - 1);
 	});
+	$("#main section.ob a.o").click(function(){
+		$(this).closest("div").addClass("chk");
+		var pos = getPos($(this));
+		//show big count!;
+		orderDishes(pos, 1);
+	});
+	$("#main section.ob a.d").click(function(){
+		$(this).closest("div").removeClass("chk");
+		var pos = getPos($(this));
+		orderDishes(pos, 0);
+	});
+	$("#main section.ob a.p").click(function(){
+		var pos = getPos($(this));
+		//show big count!;
+		orderDishes(pos, 1);
+	});
 	$("#promotion section.slt a").click(
 			function() {
 				var piData = $(this).attr("data-pi");
@@ -377,6 +401,35 @@ var bindEvent = function() {
 						.trigger('click');
 				$(this).toggleClass("chk");
 			});
+};
+var getPos = function(el){
+	var i = parseInt($(el).closest("article").attr("data-index"));
+	var p = parseInt($(el).closest("div.page").attr("data-page"));
+	var dishIndex = p + "/" + i;
+	return dishIndex;
+};
+var orderDishes = function(pos, method){
+	var exp = pos + "/(.),?";
+    var reg = new RegExp(exp, "g");
+    var res = reg.exec(selectedDishes);
+    var total =  (res == null) ? 0 : parseInt(res[1]);
+    total += method;
+    if((total < 0) || (method == 0)){
+    	total = 0;
+    }
+    //console.log(pos + " now order " + total);
+	switch(total){
+	case 0:
+		selectedDishes = selectedDishes.replace(reg, "");
+		break;
+	case 1:
+		selectedDishes += pos + "/1,";
+		break;
+	default:
+		selectedDishes = selectedDishes.replace(reg, pos + "/" + total + ",");
+	}
+	//console.log("Order list now is " + selectedDishes);
+	return total;
 };
 
 document.addEventListener("deviceready", onDeviceReady, false);

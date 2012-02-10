@@ -2,9 +2,11 @@
 body {
 	font-size: 16px;
 }
+
 a {
-   outline: 0;
+	outline: 0;
 }
+
 @media ( min-width : 1200px) , ( min-height : 1200px) {
 	body {
 		font-size: 20px;
@@ -40,7 +42,8 @@ body>section {
 	overflow: hidden;
 	z-index: 3;
 }
-div.page{
+
+div.page {
 	background-color: #622F14;;
 }
 /**start dish item**/
@@ -50,9 +53,32 @@ article {
 	height: 33%;
 	display: block;
 }
+
 article>header {
 	position: relative;
 	z-index: 5;
+}
+
+article>section.price {
+	position: relative;
+	z-index: 6;
+}
+
+article>section.price>ul li {
+	list-style: none
+}
+
+article>section.des {
+	position: absolute;
+	font-size: 0.8em;
+	top: 3.75em;
+	left: 60%;
+	bottom: 0;
+	right: 0;
+	padding: 0 0.5em;
+	overflow: auto;
+	z-index: 6;
+	border-left: 1px solid #380000;
 }
 
 article>section.dish {
@@ -66,42 +92,54 @@ article>section.dish {
 	background-position: 50% 50%;
 }
 
-article>section.des {
+article>section.ob {
 	position: absolute;
-	font-size:0.8em;
-	top: 3.75em;
-	left: 60%;
-	bottom: 0;
-	right: 0;
-	padding: 0 0.5em;
-	overflow: auto;
-	z-index: 6;
-	border-left:1px solid #380000;
-}
-
-article>section.slt {
-	position: absolute;
-	left: 60%;
-	height: 3em;
-	top: 0;
-	text-align: center;
-	right: 0;
+	width: 5em;
+	height: 1.5em;
+	top: 0.8em;
+	right: 0.8em;
 	z-index: 8;
+	overflow:hidden;
 }
 
-article>section.price {
-	position: relative;
-	z-index: 6;
+section.ob>div {
+	height: 3em;
+	margin-top:0;
+	-webkit-transition: margin-top ease-out 200ms;
+}
+section.ob>div.chk{
+	margin-top:-1.5em;
 }
 
-article>section.price>ul li {
-	list-style: none
+section.ob a {
+	display: inline-block;
+	font-size:1em;
+	height:1.5em;
+	line-height:1.5em;
+	text-align: center;
 }
 
-section.slt a, #selected table a {
-	cursor: pointer;
+section.ob a.o {
 	background: -webkit-gradient(linear, left top, left bottom, from(#a3d119),
 		to(#739d00) );
+	width: 100%;
+	border-radius: 3px;
+}
+section.ob a.p{
+	background: -webkit-gradient(linear, left top, left bottom, from(#a3d119),
+		to(#739d00) );
+	width:1.5em;
+	border-radius:3px 0 0 3px;
+}
+section.ob a.d{
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffa300),
+	to(#ffce00) );
+	width:3.5em;
+	border-radius:0 3px 3px 0;
+}
+
+section.slt a,#selected table a {
+	cursor: pointer;
 	display: block;
 	width: 5em;
 	border: 1px solid #577604;
@@ -109,20 +147,19 @@ section.slt a, #selected table a {
 	margin: 0.8em 0.8em auto auto;
 	height: 1.5em;
 	line-height: 1.5em;
-	text-align:center;
 }
 
-section.slt a::before , #selected table a::before{
+section.slt a::before,#selected table a::before {
 	content: "来一个";
 }
 
-section.slt a.chk, #selected table a.chk {
+section.slt a.chk,#selected table a.chk {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffa300),
 		to(#ffce00) );
 	border-color: #b35800;
 }
 
-section.slt a.chk::before, #selected table a.chk::before {
+section.slt a.chk::before,#selected table a.chk::before {
 	content: '不要了';
 }
 /**end dish item**/
@@ -180,7 +217,7 @@ body>aside.front {
 	-ms-transform: rotate(30deg);
 	-o-transform: rotate(30deg);
 	transform: rotate(30deg);
-	display:block;
+	display: block;
 }
 
 #promoBtn,#promoBtn::before,#promoBtn::after {
@@ -191,7 +228,7 @@ body>aside.front {
 		color-stop(100%, #fff701) );
 	background: linear-gradient(top, #fffb8f 0%, #fff701 100%);
 	line-height: 2em;
-	border-radius:3px;
+	border-radius: 3px;
 }
 
 #promoBtn:before,#promoBtn:after {
@@ -240,7 +277,7 @@ body>aside.front {
 	background: url(selected.png) 50% 50% no-repeat;
 	background-size: 100%;
 	z-index: 20;
-	display:block;
+	display: block;
 }
 
 #selectBtn span {
@@ -286,18 +323,22 @@ body>aside.front {
 	border: 1px solid #380000;
 	border-radius: 5px 5px 0 0;
 }
+
 #selected table {
-	font-size:0.8em;
+	font-size: 0.8em;
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: 100%;
 }
+
 #selected thead {
 	color: #380000
 }
+
 #selected tbody {
 	color: #843e1a;
 }
+
 #selected th,#selected td {
 	text-align: center;
 	line-height: 2em;
@@ -352,9 +393,10 @@ body>aside.front {
   z-index: -1;
 }
 */
-#cover h1{
-	font-size:1.2em;
+#cover h1 {
+	font-size: 1.2em;
 }
+
 #cover h1 a {
 	background: black;
 	display: block;
@@ -364,7 +406,7 @@ body>aside.front {
 	color: white;
 }
 
-#cover .previewImg , #cover .wait{
+#cover .previewImg,#cover .wait {
 	position: absolute;
 	top: 50%;
 	left: 2em;
@@ -372,11 +414,12 @@ body>aside.front {
 	height: 33%;
 	background-repeat: no-repeat;
 	background-size: 100%;
-	background-position:50% 50%;
+	background-position: 50% 50%;
 }
-#cover .wait{
-	background-image:url(busy-32.gif);
-	background-size:auto;
+
+#cover .wait {
+	background-image: url(busy-32.gif);
+	background-size: auto;
 }
 /**end cover**/
 
@@ -432,8 +475,7 @@ article>header {
 	padding-left: 1em
 }
 
-article>section.des {
-	/*font-size: 0.8em;*/
+article>section.des { /*font-size: 0.8em;*/
 	/*background-color: #622f14;*/
 	color: white
 }
@@ -505,78 +547,99 @@ body>nav li:nth-child(4n) {
 }
 
 /**start dish layout theme**/
-div.l21>article{
-	height:50%;
+div.l21>article {
+	height: 50%;
 }
-div.l51>article{
-	height:20%;
+
+div.l51>article {
+	height: 20%;
 }
-div.l31 article.i3{
-	height:34%;
+
+div.l31 article.i3 {
+	height: 34%;
 }
-div.l52{
-	position:relative;
+
+div.l52 {
+	position: relative;
 }
-div.l52>article.i1{
+
+div.l52>article.i1 {
 	width: 100%;
-	height:40%;
+	height: 40%;
 }
-div.l52>article.i2, div.l52>article.i3, div.l52>article.i4, div.l52>article.i5{
-	position:absolute;
-	width:50%;
-	height:30%;
+
+div.l52>article.i2,div.l52>article.i3,div.l52>article.i4,div.l52>article.i5
+	{
+	position: absolute;
+	width: 50%;
+	height: 30%;
 }
-div.l52>article.i2{
-	left:0;
-	right:50%;
-	top:40%;
-	bottom:70%;
+
+div.l52>article.i2 {
+	left: 0;
+	right: 50%;
+	top: 40%;
+	bottom: 70%;
 }
-div.l52>article.i3{
-	left:50%;
-	right:0;
-	top:40%;
-	bottom:70%;
+
+div.l52>article.i3 {
+	left: 50%;
+	right: 0;
+	top: 40%;
+	bottom: 70%;
 }
-div.l52>article.i4{
-	left:0;
-	right:50%;
-	top:70%;
-	bottom:0;
+
+div.l52>article.i4 {
+	left: 0;
+	right: 50%;
+	top: 70%;
+	bottom: 0;
 }
-div.l52>article.i5{
-	left:50%;
-	right:0;
-	top:70%;
-	bottom:0;
+
+div.l52>article.i5 {
+	left: 50%;
+	right: 0;
+	top: 70%;
+	bottom: 0;
 }
-div.l41>article{
-	height:25%;
+
+div.l41>article {
+	height: 25%;
 }
-div.l42>article{
-	width:50%;
-	height:50%;
-	display:inline-block;
+
+div.l42>article {
+	width: 50%;
+	height: 50%;
+	display: inline-block;
 }
-div.l42>article>section.dish, div.l52>article.i2>section.dish, div.l52>article.i3>section.dish, div.l52>article.i4>section.dish, div.l52>article.i5>section.dish{
-	right:0;
-	bottom:40%;
+
+div.l42>article>section.dish,div.l52>article.i2>section.dish,div.l52>article.i3>section.dish,div.l52>article.i4>section.dish,div.l52>article.i5>section.dish
+	{
+	right: 0;
+	bottom: 40%;
 }
-div.l42>article>section.des, div.l52>article.i2>section.des, div.l52>article.i3>section.des, div.l52>article.i4>section.des, div.l52>article.i5>section.des{
-	left:0;
-	top:60%;
+
+div.l42>article>section.des,div.l52>article.i2>section.des,div.l52>article.i3>section.des,div.l52>article.i4>section.des,div.l52>article.i5>section.des
+	{
+	left: 0;
+	top: 60%;
 }
-@media ( min-width : 900px){
-	div.l52>article.i2>section.des, div.l52>article.i3>section.des, div.l52>article.i4>section.des, div.l52>article.i5>section.des{
-		display:none;
+
+@media ( min-width : 900px) {
+	div.l52>article.i2>section.des,div.l52>article.i3>section.des,div.l52>article.i4>section.des,div.l52>article.i5>section.des
+		{
+		display: none;
 	}
-	div.l52>article.i2>section.dish, div.l52>article.i3>section.dish, div.l52>article.i4>section.dish, div.l52>article.i5>section.dish{
-		right:0;
-		bottom:0;
+	div.l52>article.i2>section.dish,div.l52>article.i3>section.dish,div.l52>article.i4>section.dish,div.l52>article.i5>section.dish
+		{
+		right: 0;
+		bottom: 0;
 	}
 }
-div.l42>article>section.slt, div.l52>article.i2>section.slt, div.l52>article.i3>section.slt, div.l52>article.i4>section.slt, div.l52>article.i5>section.slt{
-	left:0;
+
+div.l42>article>section.slt,div.l52>article.i2>section.slt,div.l52>article.i3>section.slt,div.l52>article.i4>section.slt,div.l52>article.i5>section.slt
+	{
+	left: 0;
 }
 /**end dish layout theme**/
 #mastermode {
