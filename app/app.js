@@ -401,19 +401,22 @@ var bindEvent = function() {
 		$(this).closest("div").addClass("chk");
 		var pos = getPos($(this));
 		//show big count!;
-		orderDishes(pos, 1);
+		var counts = orderDishes(pos, 1);
 		$("#selectBtn span").text(selectedDishes.split(",").length - 1);
+		$(this).closest("section").siblings("section.dish").text(counts);
 	});
 	$("#main section.ob a.d").click(function(){
 		$(this).closest("div").removeClass("chk");
 		var pos = getPos($(this));
 		orderDishes(pos, 0);
 		$("#selectBtn span").text(selectedDishes.split(",").length - 1);
+		$(this).closest("section").siblings("section.dish").text("");
 	});
 	$("#main section.ob a.p").click(function(){
 		var pos = getPos($(this));
 		//show big count!;
-		orderDishes(pos, 1);
+		var counts = orderDishes(pos, 1);
+		$(this).closest("section").siblings("section.dish").text(counts);
 	});
 };
 var getPos = function(el){
