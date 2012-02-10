@@ -137,31 +137,6 @@ section.ob a.d{
 	width:3.5em;
 	border-radius:0 3px 3px 0;
 }
-
-section.slt a,#selected table a {
-	cursor: pointer;
-	display: block;
-	width: 5em;
-	border: 1px solid #577604;
-	border-radius: 3px;
-	margin: 0.8em 0.8em auto auto;
-	height: 1.5em;
-	line-height: 1.5em;
-}
-
-section.slt a::before,#selected table a::before {
-	content: "来一个";
-}
-
-section.slt a.chk,#selected table a.chk {
-	background: -webkit-gradient(linear, left top, left bottom, from(#ffa300),
-		to(#ffce00) );
-	border-color: #b35800;
-}
-
-section.slt a.chk::before,#selected table a.chk::before {
-	content: '不要了';
-}
 /**end dish item**/
 /**start nav bar**/
 body>nav {
@@ -261,7 +236,7 @@ body>aside.front {
 	left: 0;
 	right: 2em;
 	bottom: 0;
-	background-color: #380000;
+	background-color: #622F14;
 }
 /**end promotion page**/
 @media screen and (orientation:portrait) {
@@ -341,9 +316,54 @@ body>aside.front {
 
 #selected th,#selected td {
 	text-align: center;
-	line-height: 2em;
+	line-height: 2.5em;
 	padding: 0;
 	border-bottom: 1px solid #DDA284;
+}
+#selected table span{
+	display:inline-block;
+	width:3em;
+	height:2em;
+	line-height:2em;
+	border: 1px solid #577604;
+	border-width:1px 0 ;
+}
+#selected table a {
+	display: inline-block;
+	width: 2em;
+	border: 1px solid #577604;
+	border-radius: 3px;
+	height: 2em;
+	line-height: 2em;
+}
+
+#selected table a.s{
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffa300),
+		to(#ffce00) );
+	border-radius:3px 0 0 3px;
+}
+#selected table a.p{
+	background: -webkit-gradient(linear, left top, left bottom, from(#a3d119),
+		to(#739d00) );
+	border-radius:0 3px 3px 0;
+}
+
+#selected table a.d {
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffa300),
+		to(#ffce00) );
+	border-color: #b35800;
+	width: 5em;
+}
+#selected table a.d::before {
+	content: '不要了';
+}
+
+#selected table a.d.o {
+	background: red/*-webkit-gradient(linear, left top, left bottom, from(#ffa300),
+		to(#ffce00) );*/
+}
+#selected table a.d.o::before {
+	content: "确定";
 }
 /**end selection**/
 /**start cover**/

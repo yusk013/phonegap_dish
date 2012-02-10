@@ -17,10 +17,10 @@ var onDeviceReady = function() {
 			return;
 		switch (viewIndex) {
 		case 1:
-			$("#promoBtn").trigger("tap");
+			$("#promoBtn").trigger("click");
 			break;
 		case 2:
-			$("#selectBtn").trigger("tap");
+			$("#selectBtn").trigger("click");
 			break;
 		default:
 			document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键
@@ -36,7 +36,7 @@ var onDeviceReady = function() {
 		if (isLoading)
 			return;
 		// bindSelectedMenu();
-		$("#selectBtn").trigger("tap");
+		$("#selectBtn").trigger("click");
 	};
 
 	var onSearchKeyDown = function() {
@@ -292,13 +292,13 @@ var setTitle = function() {
 };
 
 var bindEvent = function() {
-	$("#promoBtn").tap(function() {
-		$("#promotion a").each(function() {
-			thisPi = "[" + $(this).attr("data-pi") + "]";
-			if (selectedDishes.indexOf(thisPi) == -1) {
-				$(this).removeClass("chk");
+	$("#promoBtn").click(function() {
+		$("#promotion article").each(function() {
+			thisPi = "," + $(this).attr("data-pi") + "/";
+			if (("," + selectedDishes).indexOf(thisPi) == -1) {
+				$(this).find("div.obWrap").removeClass("chk");
 			} else {
-				$(this).addClass("chk");
+				$(this).find("div.obWrap").addClass("chk");
 			}
 		});
 		$("#selected").removeClass();
@@ -307,6 +307,25 @@ var bindEvent = function() {
 		viewIndex = $("#promotion").hasClass("front") ? 1 : 0;
 		setTitle();
 	});
+	$("#promotion section.ob a").click(
+			function() {
+				var piData = $(this).closest("article").attr("data-pi");
+				var pi = piData.split("/");
+				var tClass = "d";
+				if($(this).hasClass("p")){
+					tClass = "p";
+				}else if($(this).hasClass("o")){
+					tClass = "o";
+					$(this).closest("div.obWrap").addClass("chk");
+				}else if($(this).hasClass("d")){
+					tClass = "d";
+					$(this).closest("div.obWrap").removeClass("chk");
+				}
+				$(
+						"#main div.page[data-page='" + pi[0]
+								+ "'] article[data-index='" + pi[1] + "'] a." + tClass)
+						.trigger('click');
+			});
 
 	$("#selectBtn").click(function() {
 		var noOrderTips = "您还未点菜，选择菜品类别开始点菜，或者看看我们的“今日特选”。";
@@ -333,13 +352,30 @@ var bindEvent = function() {
 			}));
 
 			$("#selected table a").click(function() {
-					var piData = $(this).attr("data-pi");
+					var piData = $(this).closest("tr").attr("data-pi");
 					var pi = piData.split("/");
-					$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1]+ "'] a").trigger('click');
-					$(this).closest("tr").hide();
-					if (selectedDishes.length == 0) {
-						$("#selected").text(noOrderTips);
+					var counts = 0;
+					if($(this).hasClass("o")){
+						$("#main div.page[data-page='" + pi[0] + "'] article[data-index='" + pi[1]+ "'] a").trigger('click');
+						$(this).closest("tr").hide();
+						if (selectedDishes.length == 0) {
+							$("#selected").text(noOrderTips);
+						}
+						return;
+					}else if ($(this).hasClass("s")){
+						var nowCount = parseInt($(this).siblings("span").text());
+						if(nowCount == 1)return;
+						counts = orderDishes(piData, -1);
+					}else if($(this).hasClass("p")){
+						counts = orderDishes(piData, 1);
+					}else if($(this).hasClass("d")){
+						$(this).addClass("o");
+						return;
 					}
+					var price = parseInt($(this).closest("tr").attr("data-p"));
+					var vPrice = parseInt($(this).closest("tr").attr("data-vp"));
+					$(this).siblings("span").text(counts);
+					$(this).closest("tr").find("td.p").text((price * counts) + "/" + (vPrice * counts));
 				});
 		} else {
 			$("#selected").text(noOrderTips);
@@ -361,46 +397,24 @@ var bindEvent = function() {
 		setTitle();
 	});
 
-	$("#main section.slt a").click(function() {
-		var i = parseInt($(this).closest("article").attr("data-index"));
-		var p = parseInt($(this).closest("div.page").attr("data-page"));
-		var dishIndex = p + "/" + i;
-		if ($(this).hasClass("chk")) {
-			$(this).removeClass("chk");
-			selectedDishes = selectedDishes.replace("[" + dishIndex + "]", "");
-		} else {
-			selectedDishes += "[" + dishIndex + "]";
-			$(this).addClass("chk");
-		}
-		console.log("dishes: " + selectedDishes);
-		$("#selectBtn span").html(selectedDishes.split("/").length - 1);
-	});
 	$("#main section.ob a.o").click(function(){
 		$(this).closest("div").addClass("chk");
 		var pos = getPos($(this));
 		//show big count!;
 		orderDishes(pos, 1);
+		$("#selectBtn span").text(selectedDishes.split(",").length - 1);
 	});
 	$("#main section.ob a.d").click(function(){
 		$(this).closest("div").removeClass("chk");
 		var pos = getPos($(this));
 		orderDishes(pos, 0);
+		$("#selectBtn span").text(selectedDishes.split(",").length - 1);
 	});
 	$("#main section.ob a.p").click(function(){
 		var pos = getPos($(this));
 		//show big count!;
 		orderDishes(pos, 1);
 	});
-	$("#promotion section.slt a").click(
-			function() {
-				var piData = $(this).attr("data-pi");
-				var pi = piData.split("/");
-				$(
-						"#main div.page[data-page='" + pi[0]
-								+ "'] article[data-index='" + pi[1] + "'] a")
-						.trigger('click');
-				$(this).toggleClass("chk");
-			});
 };
 var getPos = function(el){
 	var i = parseInt($(el).closest("article").attr("data-index"));
@@ -428,7 +442,7 @@ var orderDishes = function(pos, method){
 	default:
 		selectedDishes = selectedDishes.replace(reg, pos + "/" + total + ",");
 	}
-	//console.log("Order list now is " + selectedDishes);
+	console.log("Order list now is " + selectedDishes);
 	return total;
 };
 
