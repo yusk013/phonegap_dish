@@ -594,8 +594,7 @@ div.l52>article.i1 {
 	height: 40%;
 }
 
-div.l52>article.i2,div.l52>article.i3,div.l52>article.i4,div.l52>article.i5
-	{
+div.l52>article:nth-child(n+2){
 	position: absolute;
 	width: 50%;
 	height: 30%;
@@ -639,32 +638,27 @@ div.l42>article {
 	display: inline-block;
 }
 
-div.l42>article>section.dish,div.l52>article.i2>section.dish,div.l52>article.i3>section.dish,div.l52>article.i4>section.dish,div.l52>article.i5>section.dish
-	{
+div.l42>article>section.dish, div.l52>article:nth-child(n+2)>section.dish{
 	right: 0;
 	bottom: 40%;
 }
 
-div.l42>article>section.des,div.l52>article.i2>section.des,div.l52>article.i3>section.des,div.l52>article.i4>section.des,div.l52>article.i5>section.des
-	{
+div.l42>article>section.des, div.l52>article:nth-child(n+2)>section.des{
 	left: 0;
 	top: 60%;
 }
 
 @media ( min-width : 900px) {
-	div.l52>article.i2>section.des,div.l52>article.i3>section.des,div.l52>article.i4>section.des,div.l52>article.i5>section.des
-		{
+	div.l52>article:nth-child(n+2)>section.des{
 		display: none;
 	}
-	div.l52>article.i2>section.dish,div.l52>article.i3>section.dish,div.l52>article.i4>section.dish,div.l52>article.i5>section.dish
-		{
+	div.l52>article:nth-child(n+2)>section.dish{
 		right: 0;
 		bottom: 0;
 	}
 }
 
-div.l42>article>section.slt,div.l52>article.i2>section.slt,div.l52>article.i3>section.slt,div.l52>article.i4>section.slt,div.l52>article.i5>section.slt
-	{
+div.l42>article>section.slt, div.l52>article:nth-child(n+2)>section.slt{
 	left: 0;
 }
 /**end dish layout theme**/
