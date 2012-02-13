@@ -8,6 +8,7 @@ var localMenus = { v : localVersion };
 var corpName = "Womobo Inc.";
 var miniVersion = 1328667835039;
 var viewIndex = 0;
+var noScroll = true;
 
 var isLoading = true;
 
@@ -214,25 +215,32 @@ var initUI = function() {
 		// return the finished buffer
 		return buffer;
 	});
+	
+	noScroll = (window.localStorage.getItem("scrollmode") == "noScroll");
+	
 	corpName = localMenus.corp.name;
 	setTitle();
 	var tmpl = Handlebars.compile($("#cateTmpl").html());
 	$("nav").html(tmpl(localMenus));
 
 	var localDishes = localMenus.dishes;
-	var pages = localDishes.length;
+	//var pages = localDishes.length;
 
 	showCoverMsg("初始化成功, 载入菜品.");
 
 	var mainViewWrap = $("body>section");
-
-	var mainViewWrapHeight = mainViewWrap.height();
-	var initProperty = {
-		wrapHeight : mainViewWrapHeight,
-		scrollHeight : mainViewWrapHeight * pages
-	};
-	tmpl = Handlebars.compile($("#initStyleTmpl").html());
-	$("#initStyle").html(tmpl(initProperty));
+	
+	if(noScroll){
+		mainViewWrap.addClass("noScroll");
+	}else{
+		var mainViewWrapHeight = mainViewWrap.height();
+		var initProperty = {
+			wrapHeight : mainViewWrapHeight,
+			//scrollHeight : mainViewWrapHeight * pages
+		};
+		tmpl = Handlebars.compile($("#initStyleTmpl").html());
+		$("#initStyle").html(tmpl(initProperty));
+	}
 
 	tmpl = Handlebars.compile(localURI($("#dishTmpl").html()));
 	var dishesUI = tmpl({
@@ -240,15 +248,17 @@ var initUI = function() {
 	});
 	// console.log(dishesUI);
 	mainViewWrap.html(dishesUI);
-
-	setTimeout(function() {
-		mainScroll = new iScroll('main', {
-			snap : 'div.page',
-			momentum : false,
-			hScrollbar : false,
-			vScrollbar : false
-		});
-	}, 100);
+	
+	if(!noScroll){
+		setTimeout(function() {
+			mainScroll = new iScroll('main', {
+				snap : 'div.page',
+				momentum : false,
+				hScrollbar : false,
+				vScrollbar : false
+			});
+		}, 100);
+	}
 
 	// bind promotions
 	var promo = localMenus.promotion;
@@ -392,9 +402,30 @@ var bindEvent = function() {
 	$("nav li a").bind("click", function() {
 		$("aside.front").removeClass();
 		var pi = parseInt(this.getAttribute("data-pi"));
-		mainScroll.scrollToPage(0, pi - 1, 500);
+		if(noScroll){
+			$("div.page").hide();
+			$("div.page:nth-of-type(" + pi + ")").show();
+		}else{
+			mainScroll.scrollToPage(0, pi - 1, 500);
+		}
 		viewIndex = 0;
 		setTitle();
+	});
+	
+	$(".noScroll div.page").swipeUp(function(){
+		var nextpage = $(this).next();
+		if(nextpage.length > 0){
+			$(this).hide();
+			nextpage.show();
+		}
+		console.log("page up");
+	});
+	$(".noScroll div.page").swipeDown(function(){
+		var prevpage = $(this).prev();
+		if(prevpage.length > 0){
+			$(this).hide();
+			$(this).prev().show();
+		}
 	});
 
 	$("#main section.ob a.o").click(function(){

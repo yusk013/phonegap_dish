@@ -16,7 +16,7 @@
 	<ul>{{#each_with_index category}}<li><a data-index='{{index}}' data-pi='{{pageIndex}}'>{{name}}</a></li>{{/each_with_index}}</ul>
 	</script>
 	<script id="dishTmpl" type="text/html">
-	<div id="#mainView" class="scroll">{{#each_with_index dishes}}<div data-layout='{{layout}}' data-page='{{index}}' class="page l{{layout}}">{{#each_with_index items}}<article data-id='{{id}}' data-index='{{index}}' class='i{{index}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='ob'><div class="obWrap"><a class="o">点一个</a><a class="p">+</a><a class="d">不要了</a></div></section></article>{{/each_with_index}}</div>{{/each_with_index}}</div>
+	<div>{{#each_with_index dishes}}<div data-layout='{{layout}}' data-page='{{index}}' class="page l{{layout}}">{{#each_with_index items}}<article data-id='{{id}}' data-index='{{index}}' class='i{{index}}'><header><h2>{{name}}</h2></header><section class='dish' style='background-image:url([[imgFolder]]/{{img}})'></section><section class='des'>{{des}}</section><section class='price' data-p='{{price}}' data-vp='{{vipPrice}}'><ul><li>{{price}}</li><li>{{vipPrice}}</li></ul></section><section class='ob'><div class="obWrap"><a class="o">点一个</a><a class="p">+</a><a class="d">不要了</a></div></section></article>{{/each_with_index}}</div>{{/each_with_index}}</div>
 	</script>
 	<script id="sltTmpl" type="text/html">
 	<table><thead><tr><th>菜名</th><th>价格(元)</th><th>数量</th><th>小计(元)</th><th></th></tr></thead><tbody>{{#each dishes}}<tr data-p="{{price}}" data-vp="{{vipPrice}}" data-pi="{{p}}/{{i}}"><td>{{name}}</td><td>{{price}}/{{vipPrice}}</td><td><a class="s">-</a><span class="c">{{t}}</span><a class="p">+</a></td><td class="p">{{tp}}/{{tvp}}</td><td><a class="d"></a></td></tr>{{/each}}</tbody></table><!--<p>总价：{{total}}元</p>-->
@@ -26,7 +26,6 @@
 	</script>
 	<script id="initStyleTmpl" type="text/html">
 	.page{height:{{wrapHeight}}px;}
-	.scroll{height:{{scrollHeight}}px;}
 	</script>
 	<style id="initStyle"></style>
 </head>
@@ -47,8 +46,11 @@
     <div id="selectBtn"><span>0</span></div>
 	<div id="cover"><aside class="previewImg"></aside><h1><a href="javascript:void(0)">请稍候，正在加载……</a></h1><div class="wait"></div></div>
 	<div id="mastermode">
+	<h2>大师模式</h2>
 	<ul>
 	<li><a onclick="javascript:onResetData();">清除本地数据</a></li>
+	<li><a onclick="javascript:window.localStorage.removeItem('scrollmode');">打开滚动翻页（重启生效）</a></li>
+	<li><a onclick="javascript:window.localStorage.setItem('scrollmode', 'noScroll');">关闭滚动翻页（重启生效）</a></li>
 	<li><a onclick="javascript:alert('No way!')">清理菜品图片</a></li>
 	</ul>
 	</div>
