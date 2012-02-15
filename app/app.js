@@ -239,7 +239,7 @@ var initUI = function() {
 			//scrollHeight : mainViewWrapHeight * pages
 		};
 		tmpl = Handlebars.compile($("#initStyleTmpl").html());
-		$("#initStyle").html(tmpl(initProperty));
+		$("#initStyle").text(tmpl(initProperty));
 	}
 
 	tmpl = Handlebars.compile(localURI($("#dishTmpl").html()));
